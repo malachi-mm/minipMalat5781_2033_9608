@@ -2,9 +2,19 @@ import primitives.*;
 import static java.lang.System.out;
 import static primitives.Util.*;
 
+
+/**
+ *  Achiya Danziger
+ * ID:214092033
+ * email- achiya.danziger@gmail.com
+ * \
+ * malachy mahpod
+ * id:213919608
+ * email- mahpod.malachi@gmail.com
+ */
+
 /**
  * Test program for the 1st stage
- *
  * @author Dan Zilberstein
  */
 public final class Main {
