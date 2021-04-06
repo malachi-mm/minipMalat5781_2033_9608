@@ -20,7 +20,14 @@ public class Plane implements Geometry{
      */
     public Plane(Point3D p1,Point3D p2,Point3D p3){
         q0 = p1;
-        normal = null;//temporary
+        //note: if have 2 equals points. the constructor will throw an error. and if p2 and p3 equals it's will figure out in the second test
+        Vector v1 = p3.subtract(p1);
+        Vector v2 = p2.subtract(p1);
+
+        if(v1.normalize().equals(v2.normalize()))
+            throw new IllegalArgumentException("all the 3 points on the same vector");
+
+        normal = v1.crossProduct(v2).normalize();//temporary
     }
 
     /**

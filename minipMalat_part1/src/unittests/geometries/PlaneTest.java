@@ -25,8 +25,6 @@ class PlaneTest {
         //TC11 checks that the point aren't on the same vector
         assertThrows( IllegalArgumentException.class, () -> new Plane(p1,p2,p3),
                 "the points shouldn't be on the same vector");
-
-
     }
 
     /**

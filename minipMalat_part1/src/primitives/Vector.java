@@ -59,7 +59,7 @@ public class Vector {
      */
     public Vector(Coordinate x, Coordinate y, Coordinate z) {
         Point3D point = new Point3D(x, y, z);
-        if (head.equals(Point3D.ZERO))
+        if (point.equals(Point3D.ZERO))
             throw new IllegalArgumentException("the vector can't be Zero");
         this.head = head;
     }

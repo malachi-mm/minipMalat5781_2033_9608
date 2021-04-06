@@ -1,6 +1,8 @@
 package unittests.primitives;
 
 import org.junit.jupiter.api.Test;
+import primitives.Coordinate;
+import primitives.Point3D;
 import primitives.Vector;
 
 import static java.lang.System.out;
@@ -9,6 +11,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static primitives.Util.isZero;
 
 class VectorTest {
+
+    /**
+     * Test method for {@link primitives.Vector# Vector()}.
+     */
+    @Test
+    public void testConstructor() {
+        //check 3 constructors throw
+
+        // =============== Boundary Values Tests ==================
+        // TC11: test 3 doubles zero
+        assertThrows(IllegalArgumentException.class,()->new Vector(0,0,0),"the vector can't be Zero");
+
+        // TC12: test 3 coordinates zero
+        assertThrows(IllegalArgumentException.class,()->new Vector(new Coordinate(0),new Coordinate(0),new Coordinate(0)),"the vector can't be Zero");
+
+        // TC13: test point 3d zero
+        assertThrows(IllegalArgumentException.class,()->new Vector(new Point3D(0,0,0)),"the vector can't be Zero");
+
+    }
 
     /**
      * Test method for {@link primitives.Vector#add(Vector)}.
