@@ -16,8 +16,14 @@ class Point3DTest {
 
         Point3D p1 = new Point3D(1, 2, 3);
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: Test that value of subtract is proper
         assertEquals(new Point3D(2, 3, 4).subtract(p1), new Vector(1,1,1),"ERROR: Point - Point does not work correctly");
+
+        // =============== Boundary Values Tests ==================
+
+        // TC11: test adding vectors so that the return would be the vector zero
+        assertThrows(IllegalArgumentException.class,()->p1.subtract(p1),"the returned vector can't be Zero");
 
     }
     /**
