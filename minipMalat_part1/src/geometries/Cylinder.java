@@ -47,6 +47,15 @@ public class Cylinder extends Tube{
 
     @Override
     public Vector getNormal(Point3D point) {
+        Vector norm=axisRay.getDir();//the normal
+        Point3D upPoint=axisRay.getP0().add(axisRay.getDir().scale(height));//the center of the upper base
+        Vector upvec=upPoint.subtract(point);
+        Vector lowVec=axisRay.getP0().subtract(point);
+        if (point.equals(axisRay.getP0())) {
+            norm.scale(-1);
+        }
+
+
         return null;
     }
 

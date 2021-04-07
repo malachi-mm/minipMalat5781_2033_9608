@@ -43,4 +43,5 @@ class TriangleTest {
         assertTrue(norm.equals(new Vector(0,0,1))||norm.equals(new Vector(0,0,-1))
                 ,"the normal isn't right");
     }
+
 }
