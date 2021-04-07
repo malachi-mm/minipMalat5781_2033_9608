@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TubeTest {
 
     /**
-     * Test method for {@link geometries.Sphere#getNormal(Point3D)}.
+     * Test method for {@link geometries.Tube#getNormal(Point3D)}.
      */
     @Test
     void getNormal() {
