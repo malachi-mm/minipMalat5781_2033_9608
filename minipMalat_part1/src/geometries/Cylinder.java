@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * A class to represent a cylinder with Tube and the height of the cylinder
@@ -49,14 +50,24 @@ public class Cylinder extends Tube{
     public Vector getNormal(Point3D point) {
         Vector norm=axisRay.getDir();//the normal
         Point3D upPoint=axisRay.getP0().add(axisRay.getDir().scale(height));//the center of the upper base
-        Vector upvec=upPoint.subtract(point);
-        Vector lowVec=axisRay.getP0().subtract(point);
-        if (point.equals(axisRay.getP0())) {
-            norm.scale(-1);
+
+        if (point.equals(axisRay.getP0())) {//if its the center of the lower base
+            norm=norm.scale(-1);
+        }
+        else if(!point.equals(upPoint)){//if it is not the center of either bases
+
+            Vector upvec = upPoint.subtract(point);//the vector between the point and the center of the upper base
+            Vector lowVec = axisRay.getP0().subtract(point);//the Vector between the point and the center of the lower base
+
+             if(isZero(lowVec.dotProduct(axisRay.getDir()))) {//if the axis ray and the lowvec are perpendicular(the point is in the lower bse)
+                norm=norm.scale(-1);//returns Vector of the axis ray scaled by -1
+            }
+            else if(!isZero(upvec.dotProduct(axisRay.getDir()))) {//if the point is not on the upper(and lower bases)
+                norm = super.getNormal(point);//it is the same as Tube
+            }
         }
 
-
-        return null;
+        return norm;
     }
 
 
