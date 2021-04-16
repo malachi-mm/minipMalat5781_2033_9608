@@ -29,4 +29,11 @@ class TubeTest {
         assertEquals(tb.getNormal(new Point3D(1,0,0)),new Vector(1,0,0)
                 ,"The Tube normal doesn't work  if the point is perpendicular to the beginning of the Ray");
     }
+    /**
+     * Test method for {@link geometries.Tube#findIntersections(Ray)}.
+     */
+    @Test
+    void findIntersections(){
+
+    }
 }

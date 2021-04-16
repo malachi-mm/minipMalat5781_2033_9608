@@ -4,6 +4,7 @@ import geometries.Plane;
 import geometries.Triangle;
 import org.junit.jupiter.api.Test;
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,6 +43,13 @@ class TriangleTest {
         //TC01 check normal
         assertTrue(norm.equals(new Vector(0,0,1))||norm.equals(new Vector(0,0,-1))
                 ,"the normal isn't right");
+    }
+    /**
+     * Test method for {@link geometries.Triangle#findIntersections(Ray)}.
+     */
+    @Test
+    void findIntersections(){
+
     }
 
 }
