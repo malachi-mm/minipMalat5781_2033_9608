@@ -21,10 +21,19 @@ class TubeTest {
         //TC01 check ordinary normal
         assertEquals(tb.getNormal(new Point3D(1,0,1)),new Vector(1,0,0)
         ,"The Tube normal doesn't work");
+        assertEquals(tb.getNormal(new Point3D(1,0,-1)),new Vector(1,0,0)
+                ,"The Tube normal doesn't work");
 
         // =============== Boundary Values Tests ==================
         //TC11 checks normal of point while the point is perpendicular to the beginning of the Ray");
         assertEquals(tb.getNormal(new Point3D(1,0,0)),new Vector(1,0,0)
                 ,"The Tube normal doesn't work  if the point is perpendicular to the beginning of the Ray");
+    }
+    /**
+     * Test method for {@link geometries.Tube#findIntersections(Ray)}.
+     */
+    @Test
+    void findIntersections(){
+
     }
 }

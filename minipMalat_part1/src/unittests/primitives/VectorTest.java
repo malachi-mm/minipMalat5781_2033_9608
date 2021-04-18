@@ -42,6 +42,10 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that value of lengthSquared is proper
         assertEquals(v1.add(v2),new Vector(1,5,1),"ERROR: scale wrong value");
+        // =============== Boundary Values Tests ==================
+        // TC11: test adding vectors so that the return would be the vector zero
+        assertThrows(IllegalArgumentException.class,()->v1.add(v1.scale(-1)),"the vector can't be Zero");
+
     }
     /**
      * Test method for {@link primitives.Vector#subtract(Vector)}.
@@ -54,6 +58,9 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that value of lengthSquared is proper
         assertEquals(v1.subtract(v2),new Vector(-1,1,-5),"ERROR: scale wrong value");
+        // =============== Boundary Values Tests ==================
+        // TC11: test subtracting a vector by himself
+        assertThrows(IllegalArgumentException.class,()->v1.subtract(v1),"the vector can't be Zero");
     }
 
     /**

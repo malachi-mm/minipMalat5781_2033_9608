@@ -4,6 +4,7 @@ import geometries.Plane;
 import geometries.Sphere;
 import org.junit.jupiter.api.Test;
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,5 +42,62 @@ class PlaneTest {
         //TC01 check normal
         assertTrue(norm.equals(new Vector(0,0,1))||norm.equals(new Vector(0,0,-1))
                 ,"the normal isn't right");
+
+    }
+
+    /**
+     * Test method for {@link geometries.Plane#findIntersections(Ray)}.
+     */
+    @Test
+    void findIntersections(){
+        plane =new Plane(new Point3D(2,2,2),new Point3D(2,5,5),new Point3D(-1,1,0))
+        // ============ Equivalence Partitions Tests ==============
+
+        //***********The Ray is neither orthogonal nor parallel to the plane*************
+        //TC01 Ray intersectsthe plane
+        Point3D point=new Point3D(2,0,0);
+        List<Point3D> result = sphere.findIntersections(new Ray(new Point3D(1, 0, 0),
+                new Vector(1, 0, 0)));
+        assertEquals( 1, result.size(),"Wrong number of points");
+        assertEquals(point, result.get(0),"Ray crosses plane once");
+
+        //TC02 Ray does not intersect the plane
+        assertNull(sphere.findIntersections(new Ray(new Point3D(3, 0, 0),
+                new Vector(1, 0, 0))),"Ray's line out of sphere ");
+
+        // =============== Boundary Values Tests ==================
+
+        //***********Ray is parallel to the plane*********************
+        //TC11 The Ray is  included  in the plain
+        assertNull(sphere.findIntersections(new Ray(new Point3D(2, 0, 0),
+                new Vector(-3, 1, 0))),"Ray's line out of plane ");
+
+        //TC12 the Ray is not included  in the plain
+        assertNull(sphere.findIntersections(new Ray(new Point3D(1, 0, 0),
+                new Vector(-3, 1, 0))),"Ray's line is parallel to point ");
+
+        //************************ Ray is orthogonal to the plane*******************
+        //TC13 the Ray starts before the plain
+        Point3D point=new Point3D(2, 0, 0);
+        List<Point3D> result = sphere.findIntersections(new Ray(new Point3D(1, -3, 3),
+                new Vector(1, 3, -3)));
+        assertEquals( 1, result.size(),"Wrong number of points");
+        assertEquals(point, result.get(0),"Ray crosses plane once");
+
+        //TC14 the Ray plane starts at the plain
+        assertNull(sphere.findIntersections(new Ray(new Point3D(2, 0, 0),
+                new Vector(1, 3, -3))),"Ray's line out of plane ");
+
+        //TC15 the Ray starts after the plain
+        assertNull(sphere.findIntersections(new Ray(new Point3D(3,0,0),
+                new Vector(1, 3, -3))),"Ray's line out of plane ");
+
+        //***********************Ray is neither orthogonal nor parallel to the plane and***********************8888
+        //TC16 The Ray  begins at the plane
+        assertNull(sphere.findIntersections(new Ray(new Point3D(2,0, 0),
+                new Vector(2, 3, -3))),"Ray's line out of plane ");
+        //TC17 The
+        assertNull(sphere.findIntersections(new Ray(new Point3D(2,2, 2),
+                new Vector(2, 3, -3))),"Ray's line out of plane ");
     }
 }

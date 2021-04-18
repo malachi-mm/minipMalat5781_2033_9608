@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * a class that represents a triangle
@@ -25,5 +28,10 @@ public class Triangle extends Polygon{
                 "vertices=" + vertices +
                 ", plane=" + plane +
                 '}';
+    }
+
+    @Override
+    public List<Point3D> findIntersections(Ray ray) {
+        return null;
     }
 }

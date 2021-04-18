@@ -42,4 +42,11 @@ class CylinderTest {
                 ,"The Cylinder normal doesn't work  if the point is center of the lower base");
 
     }
+    /**
+     * Test method for {@link geometries.Cylinder#findIntersections(Ray)}.
+     */
+    @Test
+    void findIntersections(){
+
+    }
 }

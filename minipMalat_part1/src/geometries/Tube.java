@@ -4,6 +4,8 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static primitives.Util.alignZero;
 
 /**
@@ -59,5 +61,10 @@ public class Tube implements Geometry{
             O = axisRay.getP0().add(axisRay.getDir().scale(t));
         Vector n = point.subtract(O).normalize();
         return n;
+    }
+
+    @Override
+    public List<Point3D> findIntersections(Ray ray) {
+        return null;
     }
 }
