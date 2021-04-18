@@ -58,8 +58,10 @@ public class Sphere implements Geometry{
         return point.subtract(center).normalize();
     }
 
+
     @Override
     public List<Point3D> findIntersections(Ray ray) {
+        vec Cen=ray.getP0().
         return null;
     }
 }
