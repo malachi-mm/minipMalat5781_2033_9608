@@ -5,6 +5,7 @@ import primitives.Util;
 import primitives.Point3D;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -61,7 +62,36 @@ public class Sphere implements Geometry{
 
     @Override
     public List<Point3D> findIntersections(Ray ray) {
-        vec Cen=ray.getP0().
-        return null;
+        try {
+            Vector u = center.subtract(ray.getP0());
+            double tm = u.dotProduct(ray.getDir());
+            double d = Math.sqrt(u.lengthSquared()-tm*tm);
+
+            if(d >= radius)
+                return null;
+
+            double th = Math.sqrt(radius*radius - d*d);
+            double t1 = tm + th, t2 = tm - th;
+
+            if(t1 <= 0 && t2 <= 0)
+                return null;
+
+            List<Point3D> listPoints = new ArrayList<Point3D>();
+            if(t1 > 0)
+                listPoints.add(ray.getP0().add(ray.getDir().scale(t1)));
+            if(t2 > 0)
+                listPoints.add(ray.getP0().add(ray.getDir().scale(t2)));
+
+            return listPoints;
+        }
+        catch (IllegalArgumentException ex){
+            List<Point3D> listPoints = new ArrayList<Point3D>();
+            listPoints.add(ray.getP0().add(ray.getDir().scale(radius)));
+            return listPoints;
+        }
+
+
+
+
     }
 }

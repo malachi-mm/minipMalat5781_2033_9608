@@ -5,6 +5,7 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +64,25 @@ public class Plane implements Geometry{
 
     @Override
     public List<Point3D> findIntersections(Ray ray) {
-        return null;
+
+        try
+        {
+            Vector vec = q0.subtract(ray.getP0());
+            double n = vec.dotProduct(normal);
+            if(n == 0)
+                return null;
+
+            double t = n/(ray.getDir().dotProduct(normal));
+
+            if(t <= 0)
+                return null;
+
+            List<Point3D> points = new ArrayList<Point3D>();
+            points.add(ray.getP0().add(ray.getDir().scale(t)));
+            return points;
+        }
+        catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 }

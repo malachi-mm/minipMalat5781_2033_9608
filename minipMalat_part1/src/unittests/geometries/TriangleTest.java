@@ -7,6 +7,8 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TriangleTest {
@@ -49,36 +51,35 @@ class TriangleTest {
      */
     @Test
     void findIntersections(){//only if the ray intersects with the plane
-        plane =new Plane(new Point3D(2,2,2),new Point3D(2,5,5),new Point3D(0,2,0))
 
-        triangle= new Triangle(new Point3D(2,2,2),new Point3D(2,-5,-5),new Point3D(-1,1,0));
+        Triangle triangle= new Triangle(new Point3D(2,2,2),new Point3D(2,-5,-5),new Point3D(-1,1,0));
         // ============ Equivalence Partitions Tests ==============
         //TC01 The Intersection with the Plane is Inside polygon/triangle
         Point3D point=new Point3D(1,1,0);
-        List<Point3D> result = sphere.findIntersections(new Ray(new Point3D(0, 1, 0),
+        List<Point3D> result = triangle.findIntersections(new Ray(new Point3D(0, 1, 0),
                 new Vector(1, 0, 0)));
         assertEquals( 1, result.size(),"Wrong number of points");
         assertEquals(point, result.get(0),"Ray crosses Triangle once");
 
         //TC02 The Intersection with the Plane is Outside against edge
-        assertNull(sphere.findIntersections(new Ray(new Point3D(0,-1, 0),
-                new Vector(1, 0 0))),"Ray's line out of Triangle ");
+        assertNull(triangle.findIntersections(new Ray(new Point3D(0,-1, 0),
+                new Vector(1, 0, 0))),"Ray's line out of Triangle ");
         //TC03 The Intersection with the Plane is Outside against vertex
-        assertNull(sphere.findIntersections(new Ray(new Point3D(0,6, 0),
+        assertNull(triangle.findIntersections(new Ray(new Point3D(0,6, 0),
                 new Vector(1, 0 ,0))),"Ray's line out of the Triangle  ");
 
         // =============== Boundary Values Tests ==================
 
         //TC11 the Intersection with the Plane is Outside on the edge
-        assertNull(sphere.findIntersections(new Ray(new Point3D(0.5,0, 0),
+        assertNull(triangle.findIntersections(new Ray(new Point3D(0.5,0, 0),
                 new Vector(1, 0,0))),"Ray's line out of the Triangle  ");
 
         //TC11 the Intersection with the Plane is Outside In vertex
-        assertNull(sphere.findIntersections(new Ray(new Point3D(-1,2,0),
+        assertNull(triangle.findIntersections(new Ray(new Point3D(-1,2,0),
                 new Vector(1, 0,0))),"Ray's line out of the Triangle  ");
 
         //TC11 the Intersection with the Plane is Outside On edge's continuation
-        assertNull(sphere.findIntersections(new Ray(new Point3D(5,2,6),
+        assertNull(triangle.findIntersections(new Ray(new Point3D(5,2,6),
                 new Vector(1, 0,0))),"Ray's line out of the Triangle  ");
 
     }
