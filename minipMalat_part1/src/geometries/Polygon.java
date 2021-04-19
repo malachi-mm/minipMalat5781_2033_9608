@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.ArrayList;
 import java.util.List;
 import primitives.*;
 import static primitives.Util.*;
@@ -89,6 +90,33 @@ public class Polygon implements Geometry {
 
 	@Override
 	public List<Point3D> findIntersections(Ray ray) {
-		return null;
+		try{
+		List<Point3D> points = plane.findIntersections(ray);
+
+		//I think that first need to do that becase the other check of polygon is more expensive and not necessary all the time
+		if(points == null)//case that no intersection in the plane
+			return null;
+
+		List<Vector> vectors = new ArrayList<Vector>();
+		for (Point3D point:vertices) {
+			vectors.add(point.subtract(ray.getP0()));
+		}
+
+		Vector vec = vectors.get(vectors.size() - 1).crossProduct(vectors.get(0));
+		double sign = alignZero(ray.getDir().dotProduct(vec));
+		if (sign == 0)
+			return null;
+		for (int i = 0; i < vertices.size() - 1; i+= 1) {
+			vec = vectors.get(i).crossProduct(vectors.get(i + 1));
+			double sign2 = 	alignZero(ray.getDir().dotProduct(vec));
+			if(sign2*sign <= 0) //check if the sign different or 0
+				return null;
+		}
+
+		return points;
+		}
+		catch (IllegalArgumentException ex) {//case that one of the vectors is ZERO
+			return null;
+		}
 	}
 }

@@ -30,8 +30,8 @@ public class Triangle extends Polygon{
                 '}';
     }
 
-    @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        return null;
-    }
+    //@Override
+    //public List<Point3D> findIntersections(Ray ray) {
+    //    return null;
+    //}
 }

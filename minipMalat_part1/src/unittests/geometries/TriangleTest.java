@@ -52,7 +52,7 @@ class TriangleTest {
     @Test
     void findIntersections(){//only if the ray intersects with the plane
 
-        Triangle triangle= new Triangle(new Point3D(2,2,2),new Point3D(2,-5,-5),new Point3D(-1,1,0));
+        Triangle triangle= new Triangle(new Point3D(2,2,2),new Point3D(2,-5,-5),new Point3D(0,2,0));
         // ============ Equivalence Partitions Tests ==============
         //TC01 The Intersection with the Plane is Inside polygon/triangle
         Point3D point=new Point3D(1,1,0);
