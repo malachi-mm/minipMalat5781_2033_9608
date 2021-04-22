@@ -46,11 +46,11 @@ class TubeTest {
         assertEquals( 2, result.size(),"Wrong number of points");
         if (result.get(0).getX() > result.get(1).getX())
             result = List.of(result.get(1), result.get(0));
-        assertEquals(List.of(p2, p1), result,"Ray crosses sphere");
+        assertEquals(List.of(p2, p1), result,"Ray crosses tube");
 
         // TC02: Ray's line is outside the tube (0 points)
         assertNull(tb.findIntersections(new Ray(new Point3D(3, 1, 2),
-                new Vector(-2, 1, 1))),"Ray's line out of sphere");
+                new Vector(-2, 1, 1))),"Ray's line out of tube");
 
 
         // TC03: Ray starts inside the tube (1 point)
@@ -64,18 +64,18 @@ class TubeTest {
         // TC04: Ray starts after the tube (0 points)
 
         assertNull(tb.findIntersections(new Ray(new Point3D(1, 2, 4),
-                new Vector(0, 1, 1))),"Ray's line out of sphere");
+                new Vector(0, 1, 1))),"Ray's line out of tube");
 
         //Tc05 starts at the tube and go from the inside(1 point)
-                p1 = new Point3D(0, 0, 4);
-                result = tb.findIntersections(new Ray(new Point3D(1, 1, 3),
-                        new Vector(-1, -1, 1)));
-                assertEquals( 1, result.size(),"Wrong number of points");
-                assertEquals(p1, result.get(0),"Ray crosses tube");
-                //TC06 ray starts at the tube and goes outside(0 points)
+        p1 = new Point3D(0, 0, 4);
+        result = tb.findIntersections(new Ray(new Point3D(1, 1, 3),
+                new Vector(-1, -1, 1)));
+        assertEquals( 1, result.size(),"Wrong number of points");
+        assertEquals(p1, result.get(0),"Ray crosses tube");
+        //TC06 ray starts at the tube and goes outside(0 points)
 
-                assertNull(tb.findIntersections(new Ray(new Point3D(1, 1, 3),
-                        new Vector(1, 1, -1))),"Ray's line out of sphere");
+        assertNull(tb.findIntersections(new Ray(new Point3D(1, 1, 3),
+                new Vector(1, 1, -1))),"Ray's line out of tube");
 
         // =============== Boundary Values Tests ==================
 
@@ -84,28 +84,62 @@ class TubeTest {
         //TC11 the ray is outside the tube(0)
 
         assertNull(tb.findIntersections(new Ray(new Point3D(6, 5, 2),
-                new Vector(0, 0, 1))),"Ray's line out of sphere");
+                new Vector(0, 0, 1))),"Ray's line out of tube");
 
         //TC12 the ray is on the surface of the tube(0)
 
         assertNull(tb.findIntersections(new Ray(new Point3D(1, 0, 2),
-                new Vector(0, 0, 1))),"Ray's line out of sphere");
+                new Vector(0, 0, 1))),"Ray's line out of tube");
         //TC13 the ray is inside  the tube(0)
 
         assertNull(tb.findIntersections(new Ray(new Point3D(0.5, 0, 2),
-                new Vector(0, 0, 1))),"Ray's line out of sphere");
+                new Vector(0, 0, 1))),"Ray's line out of tube");
 
         //TC14 the ray is on the axisTay(0)
 
         assertNull(tb.findIntersections(new Ray(new Point3D(1, 0, 2),
-                new Vector(0, 0, 1))),"Ray's line out of sphere");
+                new Vector(0, 0, 1))),"Ray's line out of tube");
 
         //*********the ray is perpendicular to the axisRay
-        //TC15 the ray starts outside the tube and goes inside(2)
+        //TC15 the ray starts outside the tube and goes insideand crosses the axisRay(2)
+         p1 = new Point3D(2, 0, 4);
+         p2 = new Point3D(0, 0, 4);
+         result = tb.findIntersections(new Ray(new Point3D(6, 0, 4),
+                new Vector(-1, 0, 0)));
+        assertEquals( 2, result.size(),"Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(p2, p1), result,"Ray crosses tube");
+
+
 
         //TC16 the ray starts outside and doesn't go inside(0)
-        assertNull(tb.findIntersections(new Ray(new Point3D(1, -3, 2),
-                new Vector(1, 0, 0))),"Ray's line out of sphere");
+        assertNull(tb.findIntersections(new Ray(new Point3D(0, 2, 2),
+                new Vector(1, 0, 0))),"Ray's line out of tube");
+        //TC17 the ray starts outside and doesn't go inside(0)
+        assertNull(tb.findIntersections(new Ray(new Point3D(1, 1, 2),
+                new Vector(1, 0, 0))),"Ray's line out of tube");
+
+        assertNull(tb.findIntersections(new Ray(new Point3D(0, 1, 2),
+                new Vector(1, 0, 0))),"Ray's line out of tube");
+        //TC18 the ray starts outside and doesn't go inside(0)
+        assertNull(tb.findIntersections(new Ray(new Point3D(9, 0, 2),
+                new Vector(1, 0, 0))),"Ray's line out of tube");
+
+
+        //TC15 the ray starts outside the tube and goes insideand crosses the axisRay(2)
+        p1 = new Point3D(2, 0, 0);
+        p2 = new Point3D(0, 0, 0);
+        result = tb.findIntersections(new Ray(new Point3D(6, 0, 0),
+                new Vector(-1, 0, 0)));
+        assertEquals( 2, result.size(),"Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(p2, p1), result,"Ray crosses tube");
+
+        //TC18 the ray is tangent to the base of the tube(0)
+        assertNull(tb.findIntersections(new Ray(new Point3D(6, 1, 1),
+                new Vector(-1, 0, 0))),"Ray's line out of tube");
 
     }
 }
