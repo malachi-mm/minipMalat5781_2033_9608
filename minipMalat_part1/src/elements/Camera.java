@@ -17,8 +17,8 @@ public class Camera {
 
     public Camera(Point3D p0, Vector vto, Vector vup) {
         this.p0 = p0;
-        if(isZero(vto.dotProduct(vup)))
-            throw new IllegalArgumentException("yup and yt should be orthogonal");
+        if(!isZero(vto.dotProduct(vup)))
+            throw new IllegalArgumentException("yup and yto should be orthogonal");
         this.vTo = vto.normalized();
         this.vUp = vup.normalized();
         vRight=vto.crossProduct(vup).normalized();
@@ -30,6 +30,8 @@ public class Camera {
     }
 
     public Camera setDistance(double distance){
+        if(distance<=0)
+            throw new IllegalArgumentException("the distance should be bigger then 0");
         this.distance=distance;
         return this;
     }
@@ -42,8 +44,18 @@ public class Camera {
      * @return the Ray that starts from the camera and passes through the pixel
      */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i){
-        return null;
+        double xJ=(this.width/nX)*(j-(nX-1)/2);
+        double yI=(this.height/nY)*(-(i-(nY-1)/2));
+        Point3D Pc=p0.add(vTo.scale(distance));
+        Point3D pIJ=Pc;
+        if (xJ!= 0) pIJ= pIJ.add(vRight.scale(xJ));
+        if (yI!= 0) pIJ= pIJ.add(vUp.scale(yI));
+        Vector vIJ=pIJ.subtract(this.p0);
+        return new Ray(this.p0,vIJ);
     }
+
+
+
     public Point3D getP0() {
         return p0;
     }
