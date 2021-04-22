@@ -68,7 +68,7 @@ public class Tube implements Geometry{
     public List<Point3D> findIntersections(Ray ray) {
         if(ray.getDir().equals(axisRay.getDir()))
             return null;
-        try {
+
 
             Vector Dp = ray.getP0().subtract(axisRay.getP0());
 
@@ -127,9 +127,5 @@ public class Tube implements Geometry{
 
                 return points;
             }
-            }
-        catch(IllegalArgumentException ex){
-        return new ArrayList<Point3D>();
-        }
     }
 }
