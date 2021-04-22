@@ -47,6 +47,6 @@ public class Ray {
         return Objects.equals(p0, ray.p0) && Objects.equals(dir, ray.dir);
     }
     public Point3D getPoint(double t){
-return Point3D.ZERO;
+        return p0.add(dir.scale(t));
     }
 }

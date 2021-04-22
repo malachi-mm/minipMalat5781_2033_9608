@@ -78,15 +78,15 @@ public class Sphere implements Geometry{
 
             List<Point3D> listPoints = new ArrayList<Point3D>();
             if(t1 > 0)
-                listPoints.add(ray.getP0().add(ray.getDir().scale(t1)));
+                listPoints.add(ray.getPoint(t1));
             if(t2 > 0)
-                listPoints.add(ray.getP0().add(ray.getDir().scale(t2)));
+                listPoints.add(ray.getPoint(t2));
 
             return listPoints;
         }
         catch (IllegalArgumentException ex){
             List<Point3D> listPoints = new ArrayList<Point3D>();
-            listPoints.add(ray.getP0().add(ray.getDir().scale(radius)));
+            listPoints.add(ray.getPoint(radius));
             return listPoints;
         }
 

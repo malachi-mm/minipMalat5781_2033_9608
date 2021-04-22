@@ -78,7 +78,7 @@ public class Plane implements Geometry{
                 return null;
 
             List<Point3D> points = new ArrayList<Point3D>();
-            points.add(ray.getP0().add(ray.getDir().scale(t)));
+            points.add(ray.getPoint(t));
             return points;
         }
         catch (IllegalArgumentException ex) {
