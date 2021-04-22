@@ -84,20 +84,30 @@ public class Tube implements Geometry{
             return null;
         else if (disc == 0)
         {
-            List<Point3D> point = new ArrayList<Point3D>();
+            List<Point3D> point = null;
             double t = -B / 2*A;
-            point.add(ray.getPoint(t));
+            if(t >= 0){
+                point = new ArrayList<Point3D>();
+                point.add(ray.getPoint(t));
+            }
             return point;
         }
         else //disc < 0
         {
-            List<Point3D> points = new ArrayList<Point3D>();
+            List<Point3D> points = null;
             disc = Math.sqrt(disc);
-            double t1 = (-B + disc) / 2*A;
-            double t2 = (-B - disc) / 2*A;
+            double t1 = alignZero((-B + disc) / (2*A));
+            double t2 = alignZero((-B - disc) / (2*A));
 
-            points.add(ray.getPoint(t1));
-            points.add(ray.getPoint(t2));
+            if(t1 >= 0) {
+                points =  new ArrayList<Point3D>();
+                points.add(ray.getPoint(t1));
+            }
+            if(t2 >= 0) {
+                if(points == null)
+                    points =  new ArrayList<Point3D>();
+                points.add(ray.getPoint(t2));
+            }
 
             return points;
         }
