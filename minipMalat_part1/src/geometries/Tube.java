@@ -99,11 +99,11 @@ public class Tube implements Geometry{
             double t1 = alignZero((-B + disc) / (2*A));
             double t2 = alignZero((-B - disc) / (2*A));
 
-            if(t1 >= 0) {
+            if(t1 > 0) {
                 points =  new ArrayList<Point3D>();
                 points.add(ray.getPoint(t1));
             }
-            if(t2 >= 0) {
+            if(t2 > 0) {
                 if(points == null)
                     points =  new ArrayList<Point3D>();
                 points.add(ray.getPoint(t2));
