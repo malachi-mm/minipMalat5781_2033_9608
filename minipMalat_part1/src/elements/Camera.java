@@ -44,8 +44,8 @@ public class Camera {
      * @return the Ray that starts from the camera and passes through the pixel
      */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i){
-        double xJ=(this.width/nX)*(j-(nX-1)/2);
-        double yI=(this.height/nY)*(-(i-(nY-1)/2));
+        double xJ=(this.width/nX)*(-(j-((double)(nX-1))/2));
+        double yI=(this.height/nY)*(-(i-(double)(nY-1)/2));
         Point3D Pc=p0.add(vTo.scale(distance));
         Point3D pIJ=Pc;
         if (xJ!= 0) pIJ= pIJ.add(vRight.scale(xJ));
