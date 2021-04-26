@@ -6,6 +6,17 @@ import primitives.Vector;
 
 import static primitives.Util.*;
 
+/**
+ *
+ * this class is implementaion of camera.
+ * using 3 (actually 2) to the direction of the camera
+ * and point3D to the position
+ *
+ * It also has data for view plane
+ *
+ * @author Achiya Danziger Malachi Mahpod
+ * @version 1
+ */
 public class Camera {
     final Point3D p0;
     final Vector vTo;
