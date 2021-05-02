@@ -1,5 +1,6 @@
 package primitives;
 
+import java.util.List;
 import java.util.Objects;
 
 import static primitives.Util.*;
@@ -48,5 +49,19 @@ public class Ray {
     }
     public Point3D getPoint(double t){
         return p0.add(dir.scale(t));
+    }
+    public  Point3D findClosestPoint(List<Point3D> points){
+        if(points == null)
+            return null;
+        Point3D closest = points.get(0);
+        double dis = closest.distance(p0);
+        for (Point3D point:points) {
+            double dis2 = point.distance(p0);
+            if(dis2 < dis) {
+                dis = dis2;
+                closest = point;
+            }
+        }
+        return closest;
     }
 }
