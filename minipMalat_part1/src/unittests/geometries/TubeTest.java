@@ -113,6 +113,7 @@ class TubeTest {
 
 
 
+
         //TC16 the ray starts outside and doesn't go inside(0)
         assertNull(tb.findIntersections(new Ray(new Point3D(0, 2, 2),
                 new Vector(1, 0, 0))),"Ray's line out of tube");
