@@ -67,7 +67,6 @@ public class RenderTests {
 		Scene scene = new Scene("XML Test scene");
 		// enter XML file name and parse from XML file into scene object
 		// ...
-		
 		ImageWriter imageWriter = new ImageWriter("xml render test", 1000, 1000);
 		Render render = new Render() //
 				.setWriter(imageWriter) //
