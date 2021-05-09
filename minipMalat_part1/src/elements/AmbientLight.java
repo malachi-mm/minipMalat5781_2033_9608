@@ -9,10 +9,14 @@ public class AmbientLight {
 
     Color intensity;
 
+
     public AmbientLight(Color iA, double kA) {
         this.intensity = iA.scale(kA);
     }
 
+    public AmbientLight() {
+        this.intensity = Color.BLACK;
+    }
     //********Getters*******************************
     public Color getIntensity() {
         return intensity;
