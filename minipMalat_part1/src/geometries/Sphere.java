@@ -14,7 +14,7 @@ import static primitives.Util.alignZero;
  * A class that represents a sphere
  * using the center point of the sphere and the radius of the sphere
  */
-public class Sphere implements Geometry{
+public class Sphere extends Geometry{
 
     Point3D center;
     double radius;
@@ -93,5 +93,17 @@ public class Sphere implements Geometry{
 
 
 
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<Point3D> listPoints= findIntersections(ray);
+        if(listPoints==null)
+            return null;
+        List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
+
+        for (Point3D inter:listPoints)
+            listGeoPoints.add(new GeoPoint(this,inter));
+        return listGeoPoints;
     }
 }

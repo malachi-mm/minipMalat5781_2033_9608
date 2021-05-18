@@ -14,7 +14,7 @@ import static primitives.Util.alignZero;
  * using A ray for the center ray nd double for the distance
  */
 
-public class Tube implements Geometry{
+public class Tube extends Geometry{
 
     Ray axisRay;
     double radius;
@@ -127,5 +127,16 @@ public class Tube implements Geometry{
 
                 return points;
             }
+    }
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<Point3D> listPoints= findIntersections(ray);
+        if(listPoints==null)
+            return null;
+        List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
+
+        for (Point3D inter:listPoints)
+            listGeoPoints.add(new GeoPoint(this,inter));
+        return listGeoPoints;
     }
 }

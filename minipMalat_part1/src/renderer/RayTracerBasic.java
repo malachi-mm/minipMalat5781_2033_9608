@@ -1,5 +1,7 @@
 package renderer;
 
+import geometries.Intersectable;
+import geometries.Intersectable.GeoPoint;
 import primitives.Color;
 import primitives.Point3D;
 import primitives.Ray;
@@ -27,13 +29,13 @@ public class  RayTracerBasic extends RayTracerBase {
      * @param point the point we want to get it's color
      * @return the color of the point
      */
-    private Color calcColor(Point3D point){
-        return scene.ambientLight.getIntensity();
+    private Color calcColor(GeoPoint point){
+        return  scene.ambientLight.getIntensity().add(point.geometry.getEmission());
     }
 
     @Override
     public Color traceRay(Ray ray) {
-        Point3D point = ray.findClosestPoint(scene.geometries.findIntersections(ray));
+        GeoPoint point = ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
 
         if(point == null)
             return scene.background;

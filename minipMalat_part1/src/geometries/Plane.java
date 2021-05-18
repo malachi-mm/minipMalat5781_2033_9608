@@ -12,7 +12,7 @@ import java.util.List;
  * A class that represents a plain
  * using a point and a perpendicular vector
  */
-public class Plane implements Geometry{
+public class Plane extends Geometry{
     Point3D q0;
     Vector normal;
 
@@ -84,5 +84,17 @@ public class Plane implements Geometry{
         catch (IllegalArgumentException ex) {
             return null;
         }
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+
+            List<Point3D> listPoints= findIntersections(ray);
+            if(listPoints==null)
+                return null;
+            List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
+            listGeoPoints.add(new GeoPoint(this,listPoints.get(0)));
+            return listGeoPoints;
+
     }
 }

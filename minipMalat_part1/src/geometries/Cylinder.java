@@ -4,6 +4,7 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -75,6 +76,18 @@ public class Cylinder extends Tube{
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         return null;
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<Point3D> listPoints= findIntersections(ray);
+        if(listPoints==null)
+            return null;
+        List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
+
+        for (Point3D inter:listPoints)
+            listGeoPoints.add(new GeoPoint(this,inter));
+        return listGeoPoints;
     }
 
 }

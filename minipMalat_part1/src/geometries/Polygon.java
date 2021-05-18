@@ -11,7 +11,7 @@ import static primitives.Util.*;
  * 
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
 	/**
 	 * List of polygon's vertices
 	 */
@@ -93,7 +93,7 @@ public class Polygon implements Geometry {
 		try{
 		List<Point3D> points = plane.findIntersections(ray);
 
-		//I think that first need to do that becase the other check of polygon is more expensive and not necessary all the time
+		//I think that first need to do that because the other check of polygon is more expensive and not necessary all the time
 		if(points == null)//case that no intersection in the plane
 			return null;
 
@@ -118,5 +118,17 @@ public class Polygon implements Geometry {
 		catch (IllegalArgumentException ex) {//case that one of the vectors is ZERO
 			return null;
 		}
+
+	}
+	@Override
+	public List<GeoPoint> findGeoIntersections(Ray ray) {
+
+		List<Point3D> listPoints= findIntersections(ray);
+		if(listPoints==null)
+			return null;
+		List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
+		listGeoPoints.add(new GeoPoint(this,listPoints.get(0)));
+		return listGeoPoints;
+
 	}
 }
