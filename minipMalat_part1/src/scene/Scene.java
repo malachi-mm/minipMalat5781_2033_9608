@@ -12,7 +12,7 @@ import java.util.List;
 public class Scene {
     public String name;
     public Color background=Color.BLACK;
-    public AmbientLight ambientLight;//should we delete it
+    public AmbientLight ambientLight=new AmbientLight(Color.BLACK,0);//should we delete it
     public Geometries geometries;
     public List<LightSource> lights=new LinkedList<LightSource>();
 
