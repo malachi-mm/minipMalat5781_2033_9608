@@ -30,11 +30,18 @@ public class SpotLight extends PointLight {
 
     @Override
     public Color getIntensity(Point3D p) {
-        double m=0;
-        double l=direction.dotProduct(getL(p));
-        if(Math.cos(angle*Math.PI)<l)
-            m=l;
-        return super.getIntensity(p).scale(m);
+        double l;
+        double m = direction.dotProduct(getL(p));
+
+        if(angle==0.5)
+        {l=m;}
+        else {
+             l = Math.cos(Math.acos(m) * (0.5 / angle));
+
+            if (Math.cos(angle * Math.PI) > m)
+                l = 0;
+        }
+        return super.getIntensity(p).scale(Math.max(0,l));
     }
 
 }
