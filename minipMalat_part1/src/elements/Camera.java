@@ -43,7 +43,7 @@ public class Camera {
     public Camera setDistance(double distance){
         if(distance<=0)
             throw new IllegalArgumentException("the distance should be bigger then 0");
-        this.distance=distance;
+        this.distance=distance*2.5;
         return this;
     }
 

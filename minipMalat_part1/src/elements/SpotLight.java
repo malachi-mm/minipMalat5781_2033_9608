@@ -11,7 +11,7 @@ import primitives.Vector;
 public class SpotLight extends PointLight {
 
     private Vector direction;
-
+    private double angle=0.5;
     /**
      * A constructor that gets the intensity,position and the direction of the light
      * @param intensity the intensity of the light
@@ -23,9 +23,18 @@ public class SpotLight extends PointLight {
         this.direction = direction.normalized();
     }
 
+    public SpotLight setAngle(double angle) {
+        this.angle = angle;
+        return this;
+    }
+
     @Override
     public Color getIntensity(Point3D p) {
-        return super.getIntensity(p).scale(Math.max(0,direction.dotProduct(getL(p))));
+        double m=0;
+        double l=direction.dotProduct(getL(p));
+        if(Math.cos(angle*Math.PI)<l)
+            m=l;
+        return super.getIntensity(p).scale(m);
     }
 
 }
