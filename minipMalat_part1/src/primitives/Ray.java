@@ -50,9 +50,11 @@ public class Ray {
         Ray ray = (Ray) o;
         return Objects.equals(p0, ray.p0) && Objects.equals(dir, ray.dir);
     }
+
     public Point3D getPoint(double t){
         return p0.add(dir.scale(t));
     }
+
 
     public  Point3D findClosestPoint(List<Point3D> points){
         if(points == null)

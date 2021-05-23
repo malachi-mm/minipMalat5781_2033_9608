@@ -8,6 +8,8 @@ import primitives.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
+import static primitives.Util.alignZero;
+
 /**
  * A class that represents a plain
  * using a point and a perpendicular vector
@@ -87,14 +89,17 @@ public class Plane extends Geometry{
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
 
             List<Point3D> listPoints= findIntersections(ray);
             if(listPoints==null)
                 return null;
-            List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
-            listGeoPoints.add(new GeoPoint(this,listPoints.get(0)));
-            return listGeoPoints;
-
+            double t =ray.getP0().distance(listPoints.get(0));
+            if(alignZero(t - maxDistance) <= 0) {
+                List<GeoPoint> listGeoPoints = new ArrayList<GeoPoint>();
+                listGeoPoints.add(new GeoPoint(this, listPoints.get(0)));
+                return listGeoPoints;
+            }
+            return null;
     }
 }

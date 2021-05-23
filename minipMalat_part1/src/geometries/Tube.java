@@ -129,14 +129,19 @@ public class Tube extends Geometry{
             }
     }
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersections(Ray ray,double maxDistance) {
         List<Point3D> listPoints= findIntersections(ray);
         if(listPoints==null)
             return null;
         List<GeoPoint> listGeoPoints= new ArrayList<GeoPoint>();
 
-        for (Point3D inter:listPoints)
-            listGeoPoints.add(new GeoPoint(this,inter));
+        for (Point3D inter:listPoints) {
+            double t =ray.getP0().distance(inter);
+            if(alignZero(t - maxDistance) <= 0)
+                listGeoPoints.add(new GeoPoint(this, inter));
+        }
+        if(listGeoPoints.isEmpty())
+            return null;
         return listGeoPoints;
     }
 }

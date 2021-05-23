@@ -43,5 +43,9 @@ public class SpotLight extends PointLight {
         }
         return super.getIntensity(p).scale(Math.max(0,l));
     }
+    @Override
+    public double getDistance(Point3D point) {
+        return point.distance(this.position);
+    }
 
 }
