@@ -6,6 +6,11 @@ package primitives;
 public class Material {
 
     public double kD=0,kS=0;
+    /**
+     * kT- determines the refraction(Transparency) of the Material
+     * kR determines how much the Material is  reflecting
+     */
+    public double kT=0.0,kR=0.0;
     public int nShininess=0;
 
     /**
@@ -43,7 +48,35 @@ public class Material {
         return kS;
     }
 
+    public double getkT() {
+        return kT;
+    }
+
+    public double getkR() {
+        return kR;
+    }
+
     public int getnShininess() {
         return nShininess;
+    }
+
+    /**
+     * sets the kT
+     * @param kT the new kT
+     * @return the material
+     */
+    public Material setkT(double kT) {
+        this.kT = kT;
+        return this;
+    }
+
+    /**
+     * sets the kR
+     * @param kR the new kR
+     * @return the material
+     */
+    public Material setkR(double kR) {
+        this.kR = kR;
+        return this;
     }
 }

@@ -39,7 +39,7 @@ public class Render {
         if (rayTracer == null)
             throw new MissingResourceException(rayTracer.getClass().getName(), "missing resource", "4");
 
-        camera.setViewPlaneSize(writer.getNx(),writer.getNy());
+        //camera.setViewPlaneSize(writer.getNx(),writer.getNy());
         for (int i = 0; i < writer.getNx(); i++) {
             for (int j = 0; j < writer.getNy(); j++) {
                 Color color = rayTracer.traceRay(camera.constructRayThroughPixel(writer.getNx(), writer.getNy(), i, j));

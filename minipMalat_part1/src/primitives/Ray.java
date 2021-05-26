@@ -22,6 +22,8 @@ public class Ray {
     Point3D p0;
     Vector dir;
 
+    private static final double DELTA = 0.1;
+
     /**
      * A constructor that gets a vector and a point
      * the constructor will normalize the vector
@@ -32,6 +34,18 @@ public class Ray {
     public Ray(Point3D p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir.normalized();
+    }
+
+    /**
+     * A constructor that adds Delta to the point so it won't be affected from computing errors
+     * @param p0 the point to add the delta to
+     * @param direction the direction of the new ray
+     * @param n the normal-the direction of the delta
+     */
+    public Ray(Point3D p0,Vector direction,Vector n) {
+        Vector delta = n.scale(n.dotProduct(direction) > 0 ? DELTA : -DELTA);
+        this.p0 = p0.add(delta);
+        this.dir=direction;
     }
 
     //region getters

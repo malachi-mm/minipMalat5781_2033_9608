@@ -55,5 +55,4 @@ public interface Intersectable {
     }
     List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance);
 
-
 }
