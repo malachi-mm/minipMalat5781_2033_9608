@@ -249,7 +249,7 @@ public class ReflectionRefractionTests {
 	@Test
 	public void DepthOfField() {
 		Camera camera = new Camera(new Point3D(0, 0, 100), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-				.setViewPlaneSize(200, 200).setDistance(100).setApertureDistance(20).setApertureRadius(0.1); //
+				.setViewPlaneSize(200, 200).setDistance(100).setApertureDistance(20).setApertureRadius(0.5); //
 
 		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
 
@@ -258,12 +258,12 @@ public class ReflectionRefractionTests {
 						.setEmission(new Color(200, 100, 50)) //
 						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
-				new Sphere(new Point3D(-80,-40,-80),40)
-						.setEmission(new Color(0, 100, 50)) //
+				new Sphere(new Point3D(-320,-160,-320),40)
+						.setEmission(new Color(0, 100, 200)) //
 						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
-				new Plane(new Point3D(0,100,-100),new Point3D(100,0,-100),new Point3D(0,0,-100))
-						.setEmission(new Color(10, 10, 10)) //
+				new Plane(new Point3D(0,500,-500),new Point3D(500,0,-500),new Point3D(0,0,-500))
+						.setEmission(new Color(10, 10, 80)) //
 						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0.7))
 		);
 
@@ -282,6 +282,12 @@ public class ReflectionRefractionTests {
 				.setWriter(imageWriter) //
 				.setCamera(camera) //
 				.setRayTracer(new RayTracerBasic(scene)).setUseDOF(true);
+
+		render.renderImage();
+		render.writeToImage();
+
+		 imageWriter = new ImageWriter("DepthOfField2", 600, 600);
+		 render.setWriter(imageWriter).setUseDOF(false);
 
 		render.renderImage();
 		render.writeToImage();
