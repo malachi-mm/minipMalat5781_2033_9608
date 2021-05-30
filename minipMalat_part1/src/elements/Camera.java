@@ -115,7 +115,7 @@ public class Camera {
         double t = n / (ray.getDir().dotProduct(vTo));
 
         Point3D focalPoint = ray.getPoint(t);
-        List<Point3D> points = superSampling(nX, nY, j, i, 9);
+        List<Point3D> points = superSampling(nX, nY, j, i, 9,apertureRadius);
 
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
@@ -133,16 +133,16 @@ public class Camera {
      * @param SIZE the number of samples
      * @return list of the points to use in superSampling
      */
-    private List<Point3D> superSampling(int nX, int nY, int j, int i, int SIZE) {
+    private List<Point3D> superSampling(int nX, int nY, int j, int i, int SIZE,double radius) {
         List<Point3D> points = new ArrayList<Point3D>();
         double newSize = Math.sqrt(SIZE / 4);
         for (int k = 1; k < newSize + 1; k++) {
             for (int t = 1; t < newSize + 1; t++) {
                 //might be change because now it is a rectangular but not a circle
-                points.add(calcPointOnPixel(nX, nY, j + apertureRadius / k, i + apertureRadius / t));
-                points.add(calcPointOnPixel(nX, nY, j - apertureRadius / k, i + apertureRadius / t));
-                points.add(calcPointOnPixel(nX, nY, j + apertureRadius / k, i - apertureRadius / t));
-                points.add(calcPointOnPixel(nX, nY, j - apertureRadius / k, i - apertureRadius / t));
+                points.add(calcPointOnPixel(nX, nY, j + radius / k, i + radius / t));
+                points.add(calcPointOnPixel(nX, nY, j - radius / k, i + radius / t));
+                points.add(calcPointOnPixel(nX, nY, j + radius / k, i - radius / t));
+                points.add(calcPointOnPixel(nX, nY, j - radius / k, i - radius / t));
             }
         }
         points.add(calcPointOnPixel(nX, nY, j, i));
