@@ -27,6 +27,10 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final double INITIAL_K = 1.0;
 
+
+
+
+
     /**
      * the constructor for our ray tracer gets the scene
      *
@@ -36,6 +40,37 @@ public class RayTracerBasic extends RayTracerBase {
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
+
+
+
+
+    /**
+     * here we decide the color of a certain point
+     * @param ray the central ray that passes through the pixel
+     * @return the color of the point
+     */
+    @Override
+    public Color traceRay(Ray ray) {
+        GeoPoint point = findClosestIntersection(ray);
+
+        if (point == null)
+            return scene.background;
+
+        return calcColor(point, ray);
+    }
+
+    /**
+     * calculates the color of the point
+     *
+     * @param geopoint the GeoPoint we want to get the  color of
+     * @param ray      the ray from the camera to the point
+     * @return the color of the point
+     */
+    private Color calcColor(GeoPoint geopoint, Ray ray) {
+        return calcColor(geopoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).
+                add(scene.ambientLight.getIntensity());
+    }
+
 
     /**
      * a recursive function that calculates color of the point
@@ -54,17 +89,7 @@ public class RayTracerBasic extends RayTracerBase {
 
     }
 
-    /**
-     * calculates the color of the point
-     *
-     * @param geopoint the GeoPoint we want to get the  color of
-     * @param ray      the ray from the camera to the point
-     * @return the color of the point
-     */
-    private Color calcColor(GeoPoint geopoint, Ray ray) {
-        return calcColor(geopoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).
-                add(scene.ambientLight.getIntensity());
-    }
+
 
     private Color calcGlobalEffects(GeoPoint gp, Vector v, int level, double k) {
         Color color = Color.BLACK;
@@ -152,15 +177,7 @@ public class RayTracerBasic extends RayTracerBase {
         return new Ray(point, l, n);
     }
 
-    @Override
-    public Color traceRay(Ray ray) {
-        GeoPoint point = findClosestIntersection(ray);
 
-        if (point == null)
-            return scene.background;
-
-        return calcColor(point, ray);
-    }
 
     /**
      * find the closest Intersection
