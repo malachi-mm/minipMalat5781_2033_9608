@@ -249,20 +249,44 @@ public class ReflectionRefractionTests {
 	@Test
 	public void DepthOfField() {
 		Camera camera = new Camera(new Point3D(0, 0, 100), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-				.setViewPlaneSize(200, 200).setDistance(100).setApertureDistance(20).setApertureRadius(0.5); //
+				.setViewPlaneSize(200, 200).setDistance(100).setApertureDistance(20).setApertureRadius(0.9); //
 
 		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
 
 		scene.geometries.add( //
-				new Sphere(new Point3D(-40,40,-40),40)
+				new Sphere(new Point3D(-60,-70,-40),40)
 						.setEmission(new Color(200, 100, 50)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(-30,-55,-80),40)
+						.setEmission(new Color(200, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(0,-40,-120),40)
+						.setEmission(new Color(200, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(30,-25,-160),40)
+						.setEmission(new Color(200, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(60,-10,-200),40)
+						.setEmission(new Color(200, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
 
-				new Sphere(new Point3D(-320,-160,-320),40)
-						.setEmission(new Color(0, 100, 200)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+				new Sphere(new Point3D(-60,-10,-40),20)
+						.setEmission(new Color(0, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(-30,15,-80),20)
+						.setEmission(new Color(0, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(0,40,-120),20)
+						.setEmission(new Color(0, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(30,65,-160),20)
+						.setEmission(new Color(0, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
+				new Sphere(new Point3D(60,90,-200),20)
+						.setEmission(new Color(0, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
 
-				new Plane(new Point3D(0,500,-500),new Point3D(500,0,-500),new Point3D(0,0,-500))
+				new Plane(new Point3D(0,-10,-500),new Point3D(500,-10,-500),new Point3D(200,-110,-50))
 						.setEmission(new Color(10, 10, 80)) //
 						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0.7))
 		);
