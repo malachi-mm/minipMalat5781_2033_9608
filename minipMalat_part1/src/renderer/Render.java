@@ -76,10 +76,12 @@ public class Render {
                 if (useDOF) {
                     List<Ray> rays = camera.calcApertureRays(Nx, Ny, i, j);
                     for (Ray ray : rays) {
-                        color.add(rayTracer.traceRay(ray));
+                        Color c = rayTracer.traceRay(ray);
+                        color = color.add(c);
                     }
-                    color.reduce(rays.size());
-                } else
+                    color = color.reduce(rays.size());
+                }
+                else
                     color = rayTracer.traceRay(camera.constructRayThroughPixel(Nx, Ny, i, j));
                 writer.writePixel(i, j, color);
             }

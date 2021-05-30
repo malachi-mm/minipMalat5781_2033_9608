@@ -1,6 +1,5 @@
 package elements;
 
-import org.testng.internal.collections.Pair;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;

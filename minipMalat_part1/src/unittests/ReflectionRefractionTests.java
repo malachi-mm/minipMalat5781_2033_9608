@@ -248,37 +248,23 @@ public class ReflectionRefractionTests {
 
 	@Test
 	public void DepthOfField() {
-		Camera camera = new Camera(new Point3D(370, -370, 1000), new Vector(-1, 1, -3), new Vector(0, 3, 1)) //
-				.setViewPlaneSize(200, 200).setDistance(1000).setApertureDistance(20); //
+		Camera camera = new Camera(new Point3D(0, 0, 100), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+				.setViewPlaneSize(200, 200).setDistance(100).setApertureDistance(20).setApertureRadius(0.1); //
 
 		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
 
 		scene.geometries.add( //
-				new Sphere(new Point3D(-40,40,-40),20)
+				new Sphere(new Point3D(-40,40,-40),40)
 						.setEmission(new Color(200, 100, 50)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0.5)),
-				new Tube(new Ray(new Point3D(-80,-80,-100),new Vector(0,1,0)),5 )
-						.setEmission(new Color(0, 0, 100)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.7)),
-				new Tube(new Ray(new Point3D(-40,-40,-80),new Vector(0,1,0)),5 )
-						.setEmission(new Color(0, 0, 150)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.7)),
-				new Tube(new Ray(new Point3D(0,0,-60),new Vector(0,1,0)),5 )
-						.setEmission(new Color(0, 0, 200)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.7)),
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
+				new Sphere(new Point3D(-80,-40,-80),40)
+						.setEmission(new Color(0, 100, 50)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
-
-				new Tube(new Ray(new Point3D(0,0,-60),new Vector(1,0,0)),5 )
-						.setEmission(new Color(0, 0, 200)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.7)),
-				new Tube(new Ray(new Point3D(40,40,-40),new Vector(1,0,0)),5 )
-						.setEmission(new Color(0, 0, 250)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.7)),
-				new Tube(new Ray(new Point3D(80,80,-20),new Vector(1,0,0)),5 )
-						.setEmission(new Color(0, 0, 300)) //
-						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.7))
-
+				new Plane(new Point3D(0,100,-100),new Point3D(100,0,-100),new Point3D(0,0,-100))
+						.setEmission(new Color(10, 10, 10)) //
+						.setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0.7))
 		);
 
 		scene.lights.add(new SpotLight(new Color(400, 0, 0), new Point3D(80, 0, 0), new Vector(0, 0, -1)) //
@@ -289,7 +275,7 @@ public class ReflectionRefractionTests {
 				.setkL(4E-5).setkQ(2E-7));
 		scene.lights.add(new SpotLight(new Color(400, 200, 200), new Point3D(30, -120, 0), new Vector(0, 1, -1)) //
 				.setkL(4E-5).setkQ(2E-7));
-		//scene.lights.add(new DirectionalLight(new Color(400, 40, 0), new Vector(0, 0, 1)));
+		scene.lights.add(new DirectionalLight(new Color(0, 40, 400), new Vector(0, 0, 1)));
 
 		ImageWriter imageWriter = new ImageWriter("DepthOfField", 600, 600);
 		Render render = new Render() //
