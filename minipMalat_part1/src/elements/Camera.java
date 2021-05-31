@@ -115,7 +115,7 @@ public class Camera {
         double t = n / (ray.getDir().dotProduct(vTo));
 
         Point3D focalPoint = ray.getPoint(t);
-        List<Point3D> points = superSampling(nX, nY, j, i, 9,apertureRadius);
+        List<Point3D> points = superSampling(nX, nY, j, i, 81, apertureRadius);
 
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
@@ -133,9 +133,9 @@ public class Camera {
      * @param SIZE the number of samples
      * @return list of the points to use in superSampling
      */
-    private List<Point3D> superSampling(int nX, int nY, int j, int i, int SIZE,double radius) {
+    private List<Point3D> superSampling(int nX, int nY, int j, int i, int SIZE, double radius) {
         List<Point3D> points = new ArrayList<Point3D>();
-        double newSize = Math.sqrt(SIZE / 4);
+        double newSize = Math.sqrt((SIZE - 1) / 4);
         for (int k = 1; k < newSize + 1; k++) {
             for (int t = 1; t < newSize + 1; t++) {
                 //might be change because now it is a rectangular but not a circle
