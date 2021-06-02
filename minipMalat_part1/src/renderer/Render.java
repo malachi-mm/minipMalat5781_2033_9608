@@ -49,6 +49,27 @@ public class Render {
     }
 
     /**
+     * sets the size of the aperture
+     * @param apertureRadius
+     * @return
+     */
+
+    public Render setApertureSize(double apertureRadius) {
+        camera.setApertureRadius(apertureRadius);
+        return this;
+    }
+
+    public Render setApertureDistance(double apertureDistance) {
+        camera.setApertureDistance(apertureDistance);
+        return this;
+    }
+
+    public Render setSizeSuperSamplingDOF(int sizeSuperSamplingDOF) {
+        camera.setSizeSuperSamplingDOF(sizeSuperSamplingDOF);
+        return this;
+    }
+
+    /**
      * @param useGlossySurfaces whether we want to calculate glossy surfaces
      * @return this according to builder pattern
      */

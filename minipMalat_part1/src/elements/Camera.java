@@ -35,7 +35,9 @@ public class Camera {
     /**
      * the distance of the aperture plane from the view plane
      */
-    double apertureDistance = 10;
+    double apertureDistance = 1;
+
+    int sizeSuperSamplingDOF=1;
 
     public Camera(Point3D p0, Vector vto, Vector vup) {
         this.p0 = p0;
@@ -52,18 +54,20 @@ public class Camera {
         return this;
     }
 
-    public Camera setApertureRadius(double apertureRadius) {
+    public void setApertureRadius(double apertureRadius) {
         if (apertureRadius <= 0)
             throw new IllegalArgumentException("the distance should be bigger then 0");
         this.apertureRadius = apertureRadius;
-        return this;
     }
 
-    public Camera setApertureDistance(double apertureDistance) {
+    public void setApertureDistance(double apertureDistance) {
         if (apertureDistance <= 0)
             throw new IllegalArgumentException("the distance should be bigger then 0");
         this.apertureDistance = apertureDistance;
-        return this;
+    }
+
+    public void setSizeSuperSamplingDOF(int sizeSuperSamplingDOF) {
+        this.sizeSuperSamplingDOF = sizeSuperSamplingDOF;
     }
 
     public Camera setDistance(double distance) {
@@ -115,7 +119,7 @@ public class Camera {
         double t = n / (ray.getDir().dotProduct(vTo));
 
         Point3D focalPoint = ray.getPoint(t);
-        List<Point3D> points = superSampling(nX, nY, j, i, 81, apertureRadius);
+        List<Point3D> points = superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
 
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
@@ -125,7 +129,7 @@ public class Camera {
     }
 
     /**
-     * calculates the point of the superSampeling
+     * calculates the point of the superSampling
      *
      * @param nX   the number of pixels in the x axis
      * @param nY   the number of pixels in the y axis
