@@ -11,7 +11,31 @@ public class Material {
      * kR determines how much the Material is  reflecting
      */
     public double kT=0.0,kR=0.0;
+    public double kB=0.0,kG=0.0;
+
+
+
     public int nShininess=0;
+
+    /**
+     * sets the diffuse blurry glass
+     * @param kB
+     * @return
+     */
+    public Material setkB(double kB) {
+        this.kB = kB;
+        return this;
+    }
+
+    /**
+     * the Glossiness of the matter
+     * @param kG
+     * @return
+     */
+    public Material setkG(double kG) {
+        this.kG = kG;
+        return this;
+    }
 
     /**
      * @param kD the of the material

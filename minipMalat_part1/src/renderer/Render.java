@@ -18,7 +18,8 @@ public class Render {
      * what features  we want to use in the picture
      */
     boolean useDOF = false;
-    boolean useGlossySurfaces = false;
+    boolean useAntiAliasing=false;
+    //boolean useGlossySurfaces = false;
 
 
     //***************setters***************************
@@ -74,11 +75,20 @@ public class Render {
      * @return this according to builder pattern
      */
     public Render setUseGlossySurfaces(boolean useGlossySurfaces) {
-        this.useGlossySurfaces = useGlossySurfaces;
+        rayTracer.setUseGlossySurfaces(useGlossySurfaces);
+        return this;
+    }
+    public Render setSizeSuperSamplingGlossySurfaces(int sizeSuperSamplingDOF) {
+        rayTracer.setSizeSuperSamplingPart2(sizeSuperSamplingDOF);
         return this;
     }
 
-    //*********************************88
+    public Render setUseAntiAliasing(boolean useAntiEliasing) {
+        this.useAntiAliasing = useAntiEliasing;
+        return this;
+    }
+
+    //*********************************
     public void renderImage() {
         if (camera == null)
             throw new MissingResourceException(camera.getClass().getName(), "missing resource", "1");
@@ -96,6 +106,14 @@ public class Render {
                 Color color = Color.BLACK;
                 if (useDOF) {
                     List<Ray> rays = camera.calcApertureRays(Nx, Ny, i, j);
+                    for (Ray ray : rays) {
+                        Color c = rayTracer.traceRay(ray);
+                        color = color.add(c);
+                    }
+                    color = color.reduce(rays.size());
+                }
+                else if (useAntiAliasing){
+                    List<Ray> rays = camera.calcAntiAliasingRays(Nx, Ny, i, j);
                     for (Ray ray : rays) {
                         Color c = rayTracer.traceRay(ray);
                         color = color.add(c);

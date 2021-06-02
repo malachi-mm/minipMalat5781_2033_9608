@@ -1,6 +1,7 @@
 package renderer;
 
 import elements.LightSource;
+import elements.SuperSampling;
 import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
 import primitives.*;
@@ -30,6 +31,7 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double INITIAL_K = 1.0;
 
 
+
     /**
      * the constructor for our ray tracer gets the scene
      *
@@ -39,7 +41,6 @@ public class RayTracerBasic extends RayTracerBase {
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
-
 
     /**
      * here we decide the color of a certain point
@@ -94,10 +95,10 @@ public class RayTracerBasic extends RayTracerBase {
         Material material = gp.geometry.getMaterial();
         double kkr = k * material.kR;
         if (kkr > MIN_CALC_COLOR_K)
-            color = calcGlobalEffect(constructReflectedRay(l, n, gp.point), level, material.kR, kkr);
+            color = calcReflectedColor(l, n, gp.point, level, material.kR, material.kG, kkr);
         double kkt = k * material.kT;
         if (kkt > MIN_CALC_COLOR_K)
-            color = color.add(calcRefractedColor(l, n, gp.point, level, material.kR, kkt));
+            color = color.add(calcRefractedColor(l, n, gp.point, level, material.kT, material.kB, kkt));
         return color;
     }
 
@@ -158,16 +159,17 @@ public class RayTracerBasic extends RayTracerBase {
      * @param point the point we want to calculate the color of
      * @param level the level of the recursion
      * @param kT the level of transperency of the matter
+     * @param kB  the level of
      * @param kkt another stopping of the recursion
      * @return the color we get from what behind teh color
      */
-    private Color calcRefractedColor(Vector l, Vector n, Point3D point,int level, double kT, double kkt){
-        //Ray centralRay= constructRefractedRay(l, n, point);
+    private Color calcRefractedColor(Vector l, Vector n, Point3D point,int level, double kT,double kB, double kkt){
         Color color=Color.BLACK;
-        List<Ray> rays = constructRefractedRays(l, n, point);
+        List<Ray> rays = constructRefractedRays(l, n, point,kB);
+        double dp=alignZero(n.dotProduct(l));
         int i= 0;
         for (Ray ray : rays) {
-            if (alignZero(n.dotProduct(ray.getDir()))<0) {//the vector is in the right side if the dot product between him and n is smaller than 0
+            if (alignZero(n.dotProduct(ray.getDir()))*dp>0) {//the vector is in the right side if the dot product between him and n is smaller than 0
                 color = color.add(calcGlobalEffect(ray, level, kT, kkt));
                 i++;
             }
@@ -186,12 +188,77 @@ public class RayTracerBasic extends RayTracerBase {
      * @param l     the direction of the light
      * @param n     the normal from the point
      * @param point the geoPoint
+     * @param kB
      * @return the refraction ray
      */
-    private List<Ray> constructRefractedRays(Vector l, Vector n, Point3D point) {
+    private List<Ray> constructRefractedRays(Vector l, Vector n, Point3D point,double kB) {
         List<Ray> list =new ArrayList<Ray>() ;
         list.add(new Ray(point, l, n));
+        if(useGlossySurfaces&&kB>0){
+            List<Point3D> points =SuperSampling.superSampling(point.add(l.scale(10)),l, sizeSuperSamplingPart2, kB);
+
+            List<Ray> rays = new ArrayList<Ray>();
+            for (Point3D newpoint : points) {
+                list.add(new Ray(point, newpoint.subtract(point)));
+            }
+        }
         return list;
+    }
+
+
+    /**
+     * calculates the refracted light from the point
+     * @param l the direction of the ray
+     * @param n the normal from the point
+     * @param point the point we want to calculate the color of
+     * @param level the level of the recursion
+     * @param kR the level of reflectivity of the matter
+     * @param kkr another stopping of the recursion
+     * @return the color we get from what behind teh color
+     */
+    private Color calcReflectedColor(Vector l, Vector n, Point3D point,int level, double kR,double kG, double kkr){
+        Color color=Color.BLACK;
+        List<Ray> rays = constructReflectedRays(l, n, point,kG);
+        double dp=alignZero(n.dotProduct(constructReflectedRay(l,n,point).getDir()));
+        int i= 0;
+        for (Ray ray : rays) {
+            if (alignZero(n.dotProduct(ray.getDir()))*dp>0) {//the vector is in the right side if the dot product between him and n is smaller than 0
+                color = color.add(calcGlobalEffect(ray, level, kR, kkr));
+                i++;
+            }
+
+        }
+        //if (i!=0)
+        color = color.reduce(i);
+
+
+        return color;
+
+    }
+
+
+    /**
+     * Calculates the beam of  reflected rays from the point
+     *
+     * @param l     the direction of the light
+     * @param n     the normal from the point
+     * @param point the geoPoint
+     * @return the refraction ray
+     */
+    private List<Ray> constructReflectedRays(Vector l, Vector n, Point3D point,double kG) {
+        List<Ray> list =new ArrayList<Ray>() ;
+        Ray ray=constructReflectedRay(l,n,point);
+        list.add(ray);//adding the new point
+        if(useGlossySurfaces&&kG>0){
+            List<Point3D> points = SuperSampling.superSampling(ray.getPoint(10), ray.getDir(), sizeSuperSamplingPart2, kG);
+
+            List<Ray> rays = new ArrayList<Ray>();
+            for (Point3D newpoint : points) {
+                list.add(new Ray(point, newpoint.subtract(point)));
+            }
+        }
+        return list;
+
     }
     /**
      * Calculates the reflected ray from the point
@@ -201,7 +268,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param point the geoPoint
      * @return the reflection ray
      */
-    private Ray constructReflectedRay(Vector l, Vector n, Point3D point) {
+    private Ray constructReflectedRay(Vector l, Vector n, Point3D point){
         return new Ray(point, l.add(n.scale(-2 * l.dotProduct(n))).normalize(), n.scale(-1));
     }
 

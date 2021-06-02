@@ -119,7 +119,7 @@ public class Camera {
         double t = n / (ray.getDir().dotProduct(vTo));
 
         Point3D focalPoint = ray.getPoint(t);
-        List<Point3D> points = superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
+        List<Point3D> points = SuperSampling.superSampling(calcPointOnPixel(nX, nY, j, i),vTo,sizeSuperSamplingDOF,apertureRadius);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
 
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
@@ -128,7 +128,20 @@ public class Camera {
         return rays;
     }
 
-    /**
+    public List<Ray> calcAntiAliasingRays(int nX, int nY, int j, int i) {
+
+        Ray ray = constructRayThroughPixel(nX, nY, j, i);
+        List<Point3D> points = SuperSampling.superSampling(calcPointOnPixel(nX, nY, j, i), vTo,sizeSuperSamplingDOF,apertureRadius);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
+        List<Ray> rays = new ArrayList<Ray>();
+        for (Point3D point : points) {
+            rays.add(new Ray(point, point.subtract(p0)));
+        }
+        return rays;
+    }
+
+
+
+    /*
      * calculates the point of the superSampling
      *
      * @param nX   the number of pixels in the x axis
@@ -137,6 +150,7 @@ public class Camera {
      * @param SIZE the number of samples
      * @return list of the points to use in superSampling
      */
+    /*
     private List<Point3D> superSampling(int nX, int nY, int j, int i, int SIZE, double radius) {
         List<Point3D> points = new ArrayList<Point3D>();
         double newSize = Math.sqrt((SIZE - 1) / 4);
@@ -151,7 +165,7 @@ public class Camera {
         }
         points.add(calcPointOnPixel(nX, nY, j, i));
         return points;
-    }
+    }*/
 
     public Point3D getP0() {
         return p0;
