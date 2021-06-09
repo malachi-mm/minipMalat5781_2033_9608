@@ -1,5 +1,6 @@
 package elements;
 
+import geometries.Intersectable;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -39,6 +40,9 @@ public class Camera {
 
     int sizeSuperSamplingDOF=1;
 
+    int sizeSuperSamplingAntiAliasing=1;
+
+
     public Camera(Point3D p0, Vector vto, Vector vup) {
         this.p0 = p0;
         if (!isZero(vto.dotProduct(vup)))
@@ -74,6 +78,11 @@ public class Camera {
         if (distance <= 0)
             throw new IllegalArgumentException("the distance should be bigger then 0");
         this.distance = distance;
+        return this;
+    }
+
+    public Camera setSizeSuperSamplingAntiAliasing(int sizeSuperSamplingAntiAliasing) {
+        this.sizeSuperSamplingAntiAliasing = sizeSuperSamplingAntiAliasing;
         return this;
     }
 
@@ -130,8 +139,8 @@ public class Camera {
 
     public List<Ray> calcAntiAliasingRays(int nX, int nY, int j, int i) {
 
-        Ray ray = constructRayThroughPixel(nX, nY, j, i);
-        List<Point3D> points = SuperSampling.superSampling(calcPointOnPixel(nX, nY, j, i), vTo,sizeSuperSamplingDOF,apertureRadius);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
+        //Ray ray = constructRayThroughPixel(nX, nY, j, i);
+        List<Point3D> points = SuperSampling.superSampling(calcPointOnPixel(nX, nY, j, i), vTo,sizeSuperSamplingAntiAliasing,height/nX);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
             rays.add(new Ray(point, point.subtract(p0)));
@@ -139,6 +148,9 @@ public class Camera {
         return rays;
     }
 
+    public Ray calcMainRay(int nX, int nY, int j, int i) {
+        return constructRayThroughPixel(nX, nY, j, i);
+    }
 
 
     /*

@@ -1,7 +1,9 @@
 package renderer;
 
 import elements.Camera;
+import geometries.Intersectable;
 import primitives.Color;
+import primitives.Point3D;
 import primitives.Ray;
 import scene.Scene;
 
@@ -18,10 +20,96 @@ public class Render {
      * what features  we want to use in the picture
      */
     boolean useDOF = false;
-    boolean useAntiAliasing=false;
+    boolean useAntiAliasing = false;
     //boolean useGlossySurfaces = false;
 
+    private int threadsNumber = 1;
+    private final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores
+    private boolean print = false; // printing progress percentage
 
+    /**
+     * Pixel is an internal helper class
+     * whose objects are associated with a Render object that
+     * they are generated in scope of.
+     * It is used for multithreading in the Renderer and for follow up
+     * its progress.<br/>
+     * There is a main follow up object and several secondary objects -one in each thread.
+     */
+    private class Pixel {
+        private long maxRows = 0;     // Ny
+        private long maxCols = 0;// Nx
+        private long pixels = 0;// Total number of pixels: Nx*Ny
+        public volatile int row = 0;// Last processed row
+        public volatile int col = -1;// Last processed column
+        private long counter = 0;// Total number of pixels processed
+        private int percents = 0;// Percent of pixels processed
+        private long nextCounter = 0;// Next amount of processed pixels for percent progress
+
+        /**
+         * The constructor for initializing the main follow up Pixel object
+         *
+         * @parammaxRowsthe amount of pixel rows
+         * @parammaxColsthe amount of pixel columns
+         */
+        public Pixel(int maxRows, int maxCols) {
+            this.maxRows = maxRows;
+            this.maxCols = maxCols;
+            pixels = maxRows * maxCols;
+            nextCounter = pixels / 100;
+            if (Render.this.print) System.out.printf("\r %02d%%", percents);
+        }
+
+        /***  Default constructor for secondary Pixel objects*/
+        public Pixel() {
+        }
+
+        /**
+         * Public function for getting next pixel number into secondary Pixel object.
+         * The function prints also progress percentage in the console window.
+         *
+         * @paramtarget targetsecondary Pixel object to copy the row/column of the next pixel
+         * @returntrue if the work still in progress, -1 if it's done
+         */
+        public boolean nextPixel(Pixel target) {
+            int percents = nextP(target);
+            if (print && percents > 0) System.out.printf("\r %02d%%", percents);
+            if (percents >= 0) return true;
+            if (print) System.out.printf("\r %02d%%", 100);
+            return false;
+        }
+
+        /*** Internal function for thread-safe manipulating of main follow up Pixel object -this function is
+         * critical section for all the threads, and main Pixel object data is the shared data of this critical* section.
+         * The function provides next pixel number each call.
+         * @paramtarget targetsecondary Pixel object to copy the row/column of the next pixel
+         * @returnthe progress percentage for follow up: if it is 0 -nothing to print, if it is -1 -the task is
+         * finished, any other value -the progress percentage (only when it changes)*/
+        private synchronized int nextP(Pixel target) {
+            ++col;
+            ++counter;
+            if (col < maxCols) {
+                target.row = this.row;
+                target.col = this.col;
+                if (print && counter == nextCounter) {
+                    ++percents;
+                    nextCounter = pixels * (percents + 1) / 100;
+                    return percents;
+                }
+                return 0;
+            }
+            ++row;
+            if (row < maxRows) {
+                col = 0;
+                if (print && counter == nextCounter) {
+                    ++percents;
+                    nextCounter = pixels * (percents + 1) / 100;
+                    return percents;
+                }
+                return 0;
+            }
+            return -1;
+        }
+    }
     //***************setters***************************
 
     public Render setRayTracer(RayTracerBase rayTracer) {
@@ -51,6 +139,7 @@ public class Render {
 
     /**
      * sets the size of the aperture
+     *
      * @param apertureRadius
      * @return
      */
@@ -70,6 +159,12 @@ public class Render {
         return this;
     }
 
+
+    public Render setSizeSuperSamplingAntiAliasing(int sizeSuperSampling) {
+        camera.setSizeSuperSamplingAntiAliasing(sizeSuperSampling);
+        return this;
+    }
+
     /**
      * @param useGlossySurfaces whether we want to calculate glossy surfaces
      * @return this according to builder pattern
@@ -78,6 +173,7 @@ public class Render {
         rayTracer.setUseGlossySurfaces(useGlossySurfaces);
         return this;
     }
+
     public Render setSizeSuperSamplingGlossySurfaces(int sizeSuperSamplingDOF) {
         rayTracer.setSizeSuperSamplingPart2(sizeSuperSamplingDOF);
         return this;
@@ -85,6 +181,16 @@ public class Render {
 
     public Render setUseAntiAliasing(boolean useAntiEliasing) {
         this.useAntiAliasing = useAntiEliasing;
+        return this;
+    }
+
+    /**
+     * Set debug printing on
+     *
+     * @return the Render object itself
+     */
+    public Render setDebugPrint() {
+        print = true;
         return this;
     }
 
@@ -98,35 +204,62 @@ public class Render {
         if (rayTracer == null)
             throw new MissingResourceException(rayTracer.getClass().getName(), "missing resource", "4");
 
-        //camera.setViewPlaneSize(writer.getNx(),writer.getNy());
-        int Ny = writer.getNy();
-        int Nx = writer.getNx();
-        for (int i = 0; i < Nx; i++) {
-            for (int j = 0; j < Ny; j++) {
-                Color color = Color.BLACK;
-                if (useDOF) {
-                    List<Ray> rays = camera.calcApertureRays(Nx, Ny, i, j);
-                    for (Ray ray : rays) {
-                        Color c = rayTracer.traceRay(ray);
-                        color = color.add(c);
-                    }
-                    color = color.reduce(rays.size());
+        int nX = writer.getNx(), nY = writer.getNy();
+        final Pixel thePixel = new Pixel(nX, nY);// Main pixel management object
+        Thread[] threads = new Thread[threadsNumber];
+        for (int i = threadsNumber - 1; i >= 0; --i) {// create all threads
+            threads[i] = new Thread(() -> {
+                Pixel pixel = new Pixel(); // Auxiliary thread’s pixel object
+                while (thePixel.nextPixel(pixel)) {
+                    writer.writePixel(pixel.col, pixel.row, calcColorInPixel(nX, nY, pixel.col, pixel.row));
                 }
-                else if (useAntiAliasing){
-                    List<Ray> rays = camera.calcAntiAliasingRays(Nx, Ny, i, j);
-                    for (Ray ray : rays) {
-                        Color c = rayTracer.traceRay(ray);
-                        color = color.add(c);
-                    }
-                    color = color.reduce(rays.size());
-                }
-                else
-                    color = rayTracer.traceRay(camera.constructRayThroughPixel(Nx, Ny, i, j));
-                writer.writePixel(i, j, color);
-            }
+            });
         }
+        for (Thread thread : threads)
+            thread.start(); // Start all the threads
+        // Wait for all threads to finish
+        for (Thread thread : threads)
+            try {
+                thread.join();
+            } catch (Exception e) {
+            }
+        if (print) System.out.printf("\r100%%\n"); // Print 100%
+
+
     }
 
+
+    /**
+     *
+     * @param nX
+     * @param nY
+     * @param i
+     * @param j
+     * @return
+     */
+    private Color calcColorInPixel(int nX,int nY,int i, int j){
+        Color color=Color.BLACK;
+        if (useDOF) {
+            List<Ray> rays = camera.calcApertureRays(nX, nY, i, j);
+            for (Ray ray : rays) {
+                Color c = rayTracer.traceRay(ray);
+                color = color.add(c);
+            }
+            color = color.reduce(rays.size());
+        } //if using depth of field
+        else if (useAntiAliasing) {
+
+            List<Ray> rays = camera.calcAntiAliasingRays(nX, nY, i, j);
+            for (Ray ray : rays) {
+                Color c = rayTracer.traceRay(ray);
+                color = color.add(c);
+            }
+            color = color.reduce(rays.size());
+        }//if using antialiasing
+        else //the normal way
+            color = rayTracer.traceRay(camera.constructRayThroughPixel(nX, nY, i, j));
+        return color;
+    }
 
     public void printGrid(int interval, Color color) {
         if (writer == null)
@@ -149,4 +282,25 @@ public class Render {
             throw new MissingResourceException(writer.getClass().getName(), "missing resource", "1");
         writer.writeToImage();
     }
+
+    /**
+     * Set multithreading <br>
+     * -if the parameter is 0 -number of coressless SPARE (2) is taken
+     *
+     * @param threads number of threads
+     * @return the Render object itself
+     */
+    public Render setMultithreading(int threads) {
+        if (threads < 0)
+            throw new IllegalArgumentException("Multithreading must be 0 or higher");
+        if (threads != 0)
+            this.threadsNumber = threads;
+        else {
+            int cores = Runtime.getRuntime().availableProcessors() - SPARE_THREADS;
+            this.threadsNumber = cores <= 2 ? 1 : cores;
+        }
+        return this;
+    }
+
+
 }

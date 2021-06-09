@@ -19,6 +19,9 @@ public class  SuperSampling {
     public static List<Point3D> superSampling(Point3D point, Vector l, int SIZE, double radius) {
         Vector l1=l.crossProduct(l.add(new Vector(5,4,3)));
         Vector l2=l.crossProduct(l1);
+        l1.normalize();
+        l2.normalize();
+
         List<Point3D> points = new ArrayList<Point3D>();
         double newSize = Math.sqrt(SIZE - 1);
         for (int k = 1; k < newSize + 1; k++) {

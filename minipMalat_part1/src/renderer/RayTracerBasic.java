@@ -192,14 +192,14 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the refraction ray
      */
     private List<Ray> constructRefractedRays(Vector l, Vector n, Point3D point,double kB) {
-        List<Ray> list =new ArrayList<Ray>() ;
+        List<Ray> list =new ArrayList<Ray>();
         list.add(new Ray(point, l, n));
         if(useGlossySurfaces&&kB>0){
             List<Point3D> points =SuperSampling.superSampling(point.add(l.scale(10)),l, sizeSuperSamplingPart2, kB);
 
             List<Ray> rays = new ArrayList<Ray>();
-            for (Point3D newpoint : points) {
-                list.add(new Ray(point, newpoint.subtract(point)));
+            for (Point3D newPoint : points) {
+                list.add(new Ray(point, newPoint.subtract(point)));
             }
         }
         return list;
@@ -226,12 +226,9 @@ public class RayTracerBasic extends RayTracerBase {
                 color = color.add(calcGlobalEffect(ray, level, kR, kkr));
                 i++;
             }
-
         }
         //if (i!=0)
         color = color.reduce(i);
-
-
         return color;
 
     }
@@ -275,15 +272,7 @@ public class RayTracerBasic extends RayTracerBase {
 
 
 
-    /**
-     * find the closest Intersection
-     *
-     * @param ray the ray whoch has the intersections
-     * @return
-     */
-    private GeoPoint findClosestIntersection(Ray ray) {
-        return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
-    }
+
 
     /**
      * checks that the point is unshaded by another body

@@ -86,7 +86,8 @@ public class Project1Tests {
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseDOF(true)
-                .setApertureDistance(100).setApertureSize(7).setSizeSuperSamplingDOF(81);
+                .setApertureDistance(100).setApertureSize(5)
+                .setSizeSuperSamplingDOF(81);
 
         render.renderImage();
         render.writeToImage();
@@ -164,7 +165,9 @@ public class Project1Tests {
         Render render = new Render() //
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene)).setUseGlossySurfaces(true).setSizeSuperSamplingGlossySurfaces(81);
+                .setRayTracer(new RayTracerBasic(scene))
+                .setUseGlossySurfaces(true)
+                .setSizeSuperSamplingGlossySurfaces(81);
 
         render.renderImage();
         render.writeToImage();
@@ -240,7 +243,7 @@ public class Project1Tests {
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseAntiAliasing(true)
-                .setSizeSuperSamplingDOF(81);
+                .setSizeSuperSamplingAntiAliasing(81);
 
         render.renderImage();
         render.writeToImage();

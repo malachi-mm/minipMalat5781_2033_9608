@@ -1,6 +1,7 @@
 package renderer;
 
 
+import geometries.Intersectable;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
@@ -28,5 +29,15 @@ public abstract class RayTracerBase {
 
     public void setSizeSuperSamplingPart2(int sizeSuperSamplingPart2) {
         this.sizeSuperSamplingPart2 = sizeSuperSamplingPart2;
+    }
+
+    /**
+     * find the closest Intersection
+     *
+     * @param ray the ray whoch has the intersections
+     * @return
+     */
+    public  Intersectable.GeoPoint findClosestIntersection(Ray ray) {
+        return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
     }
 }
