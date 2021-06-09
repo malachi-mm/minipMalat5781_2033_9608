@@ -175,7 +175,7 @@ public class RayTracerBasic extends RayTracerBase {
             }
 
         }
-        //if (i!=0)
+        if (i!=0)
             color = color.reduce(i);
 
 
