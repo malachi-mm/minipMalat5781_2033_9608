@@ -4,6 +4,7 @@ package scene;
 import elements.AmbientLight;
 import elements.LightSource;
 import geometries.Geometries;
+import primitives.BoundingBox;
 import primitives.Color;
 
 import java.util.LinkedList;

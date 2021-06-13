@@ -1,4 +1,6 @@
 package geometries;
+
+import primitives.BoundingBox;
 import primitives.Point3D;
 import primitives.Ray;
 
@@ -6,11 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 
+ *
  */
 public interface Intersectable {
     /**
      * finds the intersections between a ray and the Geometric body
+     *
      * @param ray the ray
      * @return List of the intersection points
      */
@@ -32,8 +35,9 @@ public interface Intersectable {
 
         /**
          * A constructor that gets the geometry ind the point
+         *
          * @param geometry the geometry
-         * @param point the point
+         * @param point    the point
          */
         public GeoPoint(Geometry geometry, Point3D point) {
             this.geometry = geometry;
@@ -53,6 +57,11 @@ public interface Intersectable {
     default List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
     }
+
     List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance);
+
+    public BoundingBox getBoundingBox();
+
+    public boolean BBGetIntersection(Ray ray);
 
 }

@@ -1,6 +1,7 @@
 
 package geometries;
 
+import primitives.BoundingBox;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -34,6 +35,7 @@ public class Plane extends Geometry{
             throw new IllegalArgumentException("all the 3 points on the same vector");
 
         normal = v1.crossProduct(v2).normalize();//temporary
+        this.boundingBox = findBoundingBox();
     }
 
     /**
@@ -63,6 +65,13 @@ public class Plane extends Geometry{
     }
 
 
+    @Override
+    protected BoundingBox findBoundingBox() {
+        return new BoundingBox(new Point3D
+                (Double.MAX_VALUE,Double.MAX_VALUE,Double.MAX_VALUE)
+                ,new Point3D
+                (-Double.MAX_VALUE,-Double.MAX_VALUE,-Double.MAX_VALUE));
+    }
 
     @Override
     public List<Point3D> findIntersections(Ray ray) {

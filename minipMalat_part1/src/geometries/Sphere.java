@@ -1,9 +1,6 @@
 package geometries;
 
-import primitives.Ray;
-import primitives.Util;
-import primitives.Point3D;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ public class Sphere extends Geometry{
         if(alignZero(radius) <= 0)
             throw new IllegalArgumentException("radius must be positive");
         this.radius = radius;
+        this.boundingBox = this.findBoundingBox();
     }
 
     @Override
@@ -93,6 +91,13 @@ public class Sphere extends Geometry{
 
 
 
+    }
+
+    @Override
+    protected BoundingBox findBoundingBox() {
+        return new BoundingBox(new Point3D
+                (center.getX()+radius,center.getY()+radius,center.getZ()+radius)
+                ,new Point3D(center.getX()-radius,center.getY()-radius,center.getZ()-radius));
     }
 
     @Override

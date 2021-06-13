@@ -58,13 +58,15 @@ public class RayTracerBasic extends RayTracerBase {
         return calcColor(point, ray);
     }
 
-    /**
-     * calculates the color of the point
-     *
-     * @param geopoint the GeoPoint we want to get the  color of
-     * @param ray      the ray from the camera to the point
-     * @return the color of the point
-     */
+
+
+        /**
+         * calculates the color of the point
+         *
+         * @param geopoint the GeoPoint we want to get the  color of
+         * @param ray      the ray from the camera to the point
+         * @return the color of the point
+         */
     private Color calcColor(GeoPoint geopoint, Ray ray) {
         return calcColor(geopoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).
                 add(scene.ambientLight.getIntensity());

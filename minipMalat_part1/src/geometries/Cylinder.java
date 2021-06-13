@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.BoundingBox;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -32,6 +33,7 @@ public class Cylinder extends Tube {
         if (alignZero(height) <= 0)
             throw new IllegalArgumentException("radius must be positive");
         this.height = height;
+        this.boundingBox = this.findBoundingBox();
     }
 
     /**
@@ -104,5 +106,14 @@ public class Cylinder extends Tube {
         return points;
     }
 
+    @Override
+    protected BoundingBox findBoundingBox() {
+        Point3D a = this.axisRay.getP0(), b = this.axisRay.getPoint(height);
+        Vector R = new Vector(radius, radius, radius);
+        Point3D max = a.add(R).maxPoint(b.add(R));
+        R = R.scale(-1);
+        Point3D min = a.add(R).minPoint(b.add(R));
+        return new BoundingBox(max, min);
+    }
 
 }

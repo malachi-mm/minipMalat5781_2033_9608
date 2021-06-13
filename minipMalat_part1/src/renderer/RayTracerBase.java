@@ -15,10 +15,12 @@ public abstract class RayTracerBase {
     public RayTracerBase(Scene scene) {
         this.scene = scene;
     }
+
     public abstract Color traceRay(Ray ray);
 
-    protected boolean useGlossySurfaces=false;
-        protected int sizeSuperSamplingPart2=0;
+    protected boolean useGlossySurfaces = false;
+    protected int sizeSuperSamplingPart2 = 0;
+
     /**
      * @param useGlossySurfaces whether we want to calculate glossy surfaces
      * @return this according to builder pattern
@@ -37,7 +39,8 @@ public abstract class RayTracerBase {
      * @param ray the ray whoch has the intersections
      * @return
      */
-    public  Intersectable.GeoPoint findClosestIntersection(Ray ray) {
+    public Intersectable.GeoPoint findClosestIntersection(Ray ray) {
         return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
     }
+
 }

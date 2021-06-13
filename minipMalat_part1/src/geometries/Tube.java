@@ -1,8 +1,5 @@
 package geometries;
-import primitives.Util;
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,7 @@ public class Tube extends Geometry{
         if(alignZero(radius) <= 0)
             throw new IllegalArgumentException("radius must be positive");
         this.radius = radius;
+        this.boundingBox = findBoundingBox();
     }
 
     /**
@@ -44,6 +42,14 @@ public class Tube extends Geometry{
      */
     public double getRadius() {
         return radius;
+    }
+
+    @Override
+    protected BoundingBox findBoundingBox() {
+        return new BoundingBox(new Point3D
+                (Double.MAX_VALUE,Double.MAX_VALUE,Double.MAX_VALUE)
+                ,new Point3D
+                (-Double.MAX_VALUE,-Double.MAX_VALUE,-Double.MAX_VALUE));
     }
 
     @Override
