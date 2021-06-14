@@ -252,11 +252,11 @@ public class model3d {
         scene.lights.add(new PointLight(new Color(255, 255, 255), new Point3D(100, 0, 0)));
         //scene.lights.add(new PointLight(new Color(255, 255, 255), new Point3D(377, 5, -170)));
 
-        ImageWriter imageWriter = new ImageWriter("model3d", 1000, 1000);
+        ImageWriter imageWriter = new ImageWriter("model3d", 20000, 20000);
         Render render = new Render() //
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene)).setUseDOF(false);
+                .setRayTracer(new RayTracerBasic(scene)).setUseDOF(false).setDebugPrint();
 
         render.renderImage();
         render.writeToImage();
