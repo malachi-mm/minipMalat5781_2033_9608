@@ -53,39 +53,51 @@ public class BoundingBox {
         double xMax, yMax, zMax, xMin, yMin, zMin;
 
         if (isZero(vector.getX())) {
-            if (pointMax.getX() > point.getX() && pointMin.getX() < point.getX()) {
+            if (pointMax.getX() >= point.getX() && pointMin.getX() <= point.getX()) {
                 xMax = Double.MAX_VALUE;
-                xMin = 0;
+                xMin = Double.MIN_VALUE;
             } else
                 return false;
 
         } else {
-            xMax = (pointMax.getX() - point.getX()) / vector.getX();
-            xMin = (pointMin.getX() - point.getX()) / vector.getX();
+            double t1 = (pointMax.getX() - point.getX()) / vector.getX();
+            double t2 = (pointMin.getX() - point.getX()) / vector.getX();
+            if(t1 < t2){
+                xMin = t1; xMax = t2;
+            } else{
+                xMin = t2; xMax = t1;
+            }
         }
 
         if (isZero(vector.getY())) {
-            if (pointMax.getX() > point.getY() && pointMin.getY() < point.getY()) {
+            if (pointMax.getX() >= point.getY() && pointMin.getY() <= point.getY()) {
                 yMax = Double.MAX_VALUE;
-                yMin = 0;
+                yMin = Double.MIN_VALUE;
             } else
                 return false;
 
         } else {
-            yMax = (pointMax.getY() - point.getY()) / vector.getY();
-            yMin = (pointMin.getY() - point.getY()) / vector.getY();
+            double t1 = (pointMax.getY() - point.getY()) / vector.getY();
+            double t2 = (pointMin.getY() - point.getY()) / vector.getY();
+            if(t1 < t2){
+                yMin = t1; yMax = t2;
+            } else{
+                yMin = t2; yMax = t1;
+            }
         }
 
         if (isZero(vector.getZ())) {
-            if (pointMax.getZ() > point.getZ() && pointMin.getZ() < point.getZ()) {
+            if (pointMax.getZ() >= point.getZ() && pointMin.getZ() <= point.getZ()) {
                 zMax = Double.MAX_VALUE;
-                zMin = 0;
+                zMin = Double.MIN_VALUE;
             } else
                 return false;
 
         } else {
-            zMax = (pointMax.getZ() - point.getZ()) / vector.getZ();
-            zMin = (pointMin.getZ() - point.getZ()) / vector.getZ();
+            double t1 = (pointMax.getZ() - point.getZ()) / vector.getZ();
+            double t2 = (pointMin.getZ() - point.getZ()) / vector.getZ();
+            zMin=Math.min(t1,t2);
+            zMax=Math.max(t1,t2);
         }
 
         return !(xMin > yMax || xMin > zMax ||

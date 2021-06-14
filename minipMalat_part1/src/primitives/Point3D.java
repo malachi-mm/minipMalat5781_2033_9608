@@ -121,11 +121,11 @@ public class Point3D {
 
     public Point3D maxPoint(Point3D point) {
         Point3D max = new Point3D(this.x,this.y,this.z);
-        if (Math.abs(this.getX()) < Math.abs(point.getX()))
+        if ((this.getX()) < (point.getX()))
             max.x = point.x;
-        if (Math.abs(this.getY()) < Math.abs(point.getY()))
+        if ((this.getY()) < (point.getY()))
             max.y = point.y;
-        if (Math.abs(this.getZ()) < Math.abs(point.getZ()))
+        if ((this.getZ()) <(point.getZ()))
             max.z = point.z;
 
         return max;
@@ -134,11 +134,11 @@ public class Point3D {
     public Point3D minPoint(Point3D point) {
         Point3D min = new Point3D(this.x,this.y,this.z);
 
-        if (Math.abs(this.getX()) > Math.abs(point.getX()))
+        if ((this.getX()) > (point.getX()))
             min.x = point.x;
-        if (Math.abs(this.getY()) > Math.abs(point.getY()))
+        if ((this.getY()) > (point.getY()))
             min.y = point.y;
-        if (Math.abs(this.getZ()) > Math.abs(point.getZ()))
+        if ((this.getZ()) > (point.getZ()))
             min.z = point.z;
 
         return min;
@@ -150,7 +150,6 @@ public class Point3D {
         Point3D min = vertices.get(0);
         for (Point3D point : vertices) {
             min = min.minPoint(point);
-            System.out.print(point.toString());
         }
 
         return min;

@@ -30,6 +30,10 @@ public class Cylinder extends Tube {
      */
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
+        this.axisRay = axisRay;
+        if(alignZero(radius) <= 0)
+            throw new IllegalArgumentException("radius must be positive");
+        this.radius = radius;
         if (alignZero(height) <= 0)
             throw new IllegalArgumentException("radius must be positive");
         this.height = height;

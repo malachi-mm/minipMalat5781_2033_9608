@@ -27,7 +27,10 @@ public class Tube extends Geometry{
         if(alignZero(radius) <= 0)
             throw new IllegalArgumentException("radius must be positive");
         this.radius = radius;
-        this.boundingBox = findBoundingBox();
+        this.boundingBox = new BoundingBox(new Point3D
+                (Double.MAX_VALUE,Double.MAX_VALUE,Double.MAX_VALUE)
+                ,new Point3D
+                (-Double.MAX_VALUE,-Double.MAX_VALUE,-Double.MAX_VALUE));
     }
 
     /**
