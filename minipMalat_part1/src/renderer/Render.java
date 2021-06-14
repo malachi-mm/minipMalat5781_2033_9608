@@ -72,9 +72,12 @@ public class Render {
          */
         public boolean nextPixel(Pixel target) {
             int percents = nextP(target);
-            if (print && percents > 0) System.out.printf("\r %02d%%", percents);
-            if (percents >= 0) return true;
-            if (print) System.out.printf("\r %02d%%", 100);
+            if (print && percents > 0)
+                System.out.println(percents + "%");
+            if (percents >= 0)
+                return true;
+            if (print)
+                System.out.println(100 + "%");
             return false;
         }
 
@@ -205,6 +208,7 @@ public class Render {
             throw new MissingResourceException(rayTracer.getClass().getName(), "missing resource", "4");
 
         int nX = writer.getNx(), nY = writer.getNy();
+
         final Pixel thePixel = new Pixel(nX, nY);// Main pixel management object
         Thread[] threads = new Thread[threadsNumber];
         for (int i = threadsNumber - 1; i >= 0; --i) {// create all threads
@@ -230,15 +234,14 @@ public class Render {
 
 
     /**
-     *
      * @param nX
      * @param nY
      * @param i
      * @param j
      * @return
      */
-    private Color calcColorInPixel(int nX,int nY,int i, int j){
-        Color color=Color.BLACK;
+    private Color calcColorInPixel(int nX, int nY, int i, int j) {
+        Color color = Color.BLACK;
         if (useDOF) {
             List<Ray> rays = camera.calcApertureRays(nX, nY, i, j);
             for (Ray ray : rays) {

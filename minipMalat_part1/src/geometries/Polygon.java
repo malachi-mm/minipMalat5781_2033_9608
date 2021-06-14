@@ -52,9 +52,10 @@ public class Polygon extends Geometry {
         // polygon with this plane.
         // The plane holds the invariant normal (orthogonal unit) vector to the polygon
         plane = new Plane(vertices[0], vertices[1], vertices[2]);
-        if (vertices.length == 3)
+        if (vertices.length == 3) {
+            this.boundingBox = this.findBoundingBox();
             return; // no need for more tests for a Triangle
-
+        }
         Vector n = plane.getNormal();
 
         // Subtracting any subsequent points will throw an IllegalArgumentException
