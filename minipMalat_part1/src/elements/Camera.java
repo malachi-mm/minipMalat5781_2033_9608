@@ -22,9 +22,9 @@ import static primitives.Util.*;
  */
 public class Camera {
     final Point3D p0;
-    final Vector vTo;
-    final Vector vUp;
-    final Vector vRight;
+    Vector vTo;
+    Vector vUp;
+    Vector vRight;
     double width;
     double height;
     double distance;
@@ -178,6 +178,14 @@ public class Camera {
         points.add(calcPointOnPixel(nX, nY, j, i));
         return points;
     }*/
+    public Camera lookAt(Point3D point){
+        vTo = new Vector(point.getX() - p0.getX(),0,point.getZ() - p0.getZ()).normalize();
+        vUp = new Vector(0,1,0);
+        vRight = vUp.crossProduct(vTo).normalized();
+
+        return this;
+    }
+
 
     public Point3D getP0() {
         return p0;
