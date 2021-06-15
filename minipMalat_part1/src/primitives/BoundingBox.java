@@ -9,7 +9,7 @@ import static primitives.Util.isZero;
 
 public class BoundingBox {
     Point3D pointMax, pointMin;
-
+    Point3D center;
 
     Geometry geo;
 
@@ -22,6 +22,7 @@ public class BoundingBox {
     public BoundingBox(Point3D pointMax, Point3D pointMin) {
         this.pointMax = pointMax;
         this.pointMin = pointMin;
+        calcCenter();
     }
 
 
@@ -35,11 +36,13 @@ public class BoundingBox {
 
         pointMax = boundingBox.pointMax;
         pointMin = boundingBox.pointMin;
+        calcCenter();
     }
 
     public BoundingBox addBoundingBox(BoundingBox boundingBox) {
         pointMax = pointMax.maxPoint(boundingBox.pointMax);
         pointMin = pointMin.minPoint(boundingBox.pointMin);
+        calcCenter();
         return this;
     }
 
@@ -105,6 +108,13 @@ public class BoundingBox {
                 zMin > yMax || zMin > xMax);
 
     }
+    private void calcCenter(){
+        center=new Point3D((pointMax.getX()+pointMin.getX())/2,
+                (pointMax.getY()+pointMin.getY())/2,
+                (pointMax.getZ()+pointMin.getZ())/2);
+    }
 
-
+    public Point3D getCenter() {
+        return center;
+    }
 }

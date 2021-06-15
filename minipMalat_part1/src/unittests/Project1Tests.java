@@ -4,9 +4,7 @@ import elements.AmbientLight;
 import elements.Camera;
 import elements.DirectionalLight;
 import elements.SpotLight;
-import geometries.Plane;
-import geometries.Polygon;
-import geometries.Sphere;
+import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.Color;
 import primitives.Material;
@@ -66,7 +64,7 @@ public class Project1Tests {
                         .setEmission(new Color(0, 100, 50)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
 
-                new Plane(new Point3D(0,-10,-500),new Point3D(500,-10,-500),new Point3D(200,-110,-50))
+                new Triangle(new Point3D(0,-10,-500),new Point3D(500,-10,-500),new Point3D(200,-110,-50))
                         .setEmission(new Color(10, 10, 80)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0.7))
         );
@@ -87,6 +85,7 @@ public class Project1Tests {
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseDOF(true)
                 .setApertureDistance(100).setApertureSize(5)
+                .setMultithreading(3).setDebugPrint()
                 .setSizeSuperSamplingDOF(81);
 
         render.renderImage();
@@ -132,7 +131,7 @@ public class Project1Tests {
                         .setEmission(new Color(200, 100, 50)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
-                new Plane(new Point3D(0,-10,-500),new Point3D(-500,-10,-500),new Point3D(-200,-110,-50))
+                new Triangle(new Point3D(0,-10,-500),new Point3D(-500,-10,-500),new Point3D(-200,-110,-50))
                         .setEmission(new Color(100, 100, 100)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
@@ -167,6 +166,7 @@ public class Project1Tests {
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene))
                 .setUseGlossySurfaces(true)
+                .setMultithreading(3).setDebugPrint()
                 .setSizeSuperSamplingGlossySurfaces(81);
 
         render.renderImage();
@@ -223,7 +223,7 @@ public class Project1Tests {
                         .setEmission(new Color(0, 100, 50)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.1)),
 
-                new Plane(new Point3D(0,-10,-500),new Point3D(500,-10,-500),new Point3D(200,-110,-50))
+                new Triangle(new Point3D(0,-10,-500),new Point3D(500,-10,-500),new Point3D(200,-110,-50))
                         .setEmission(new Color(10, 10, 80)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0.7))
         );
@@ -243,7 +243,9 @@ public class Project1Tests {
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseAntiAliasing(true)
-                .setSizeSuperSamplingAntiAliasing(81);
+                .setSizeSuperSamplingAntiAliasing(81)
+                .setMultithreading(3).setDebugPrint();
+
 
         render.renderImage();
         render.writeToImage();
@@ -254,4 +256,5 @@ public class Project1Tests {
         render.renderImage();
         render.writeToImage();
     }
+
 }

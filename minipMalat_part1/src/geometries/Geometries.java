@@ -26,7 +26,7 @@ public class Geometries implements Intersectable {
 
     public void add(Intersectable... geometriesList) {
         this.geometriesList.addAll(List.of(geometriesList));
-        if (mainBox==null)
+        if (mainBox == null)
             mainBox = new BoundingBox(geometriesList[0].getBoundingBox());
         for (Intersectable geo : geometriesList) {
             mainBox.addBoundingBox(geo.getBoundingBox());
@@ -49,6 +49,7 @@ public class Geometries implements Intersectable {
         return listPoints;
     }
 
+
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         List<GeoPoint> listPoints = null;
@@ -63,6 +64,10 @@ public class Geometries implements Intersectable {
             }
         }
         return listPoints;
+    }
+
+    void buildHierarchy() {
+
     }
 
     public BoundingBox getBoundingBox() {
