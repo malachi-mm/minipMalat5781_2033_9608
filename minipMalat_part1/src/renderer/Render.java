@@ -1,6 +1,7 @@
 package renderer;
 
 import elements.Camera;
+import geometries.Geometries;
 import geometries.Intersectable;
 import primitives.Color;
 import primitives.Point3D;
@@ -187,11 +188,16 @@ public class Render {
         return this;
     }
 
-    /**
-     * Set debug printing on
-     *
-     * @return the Render object itself
-     */
+    public Render setUseBounding(Boolean useBounding) {
+        Geometries.setUseBounding(useBounding);
+        return this;
+    }
+
+        /**
+         * Set debug printing on
+         *
+         * @return the Render object itself
+         */
     public Render setDebugPrint() {
         print = true;
         return this;
