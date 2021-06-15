@@ -49,10 +49,19 @@ public abstract class Geometry implements Intersectable {
         return this;
     }
 
+    /**
+     * @return the bounding box of the geometry
+     */
     public BoundingBox getBoundingBox() {
         return boundingBox;
     }
 
+
+    /**
+     * find weather the bounding box has intesdection with the ray
+     * @param ray the ray we wand to check intersection with
+     * @return
+     */
     public boolean BBGetIntersection(Ray ray) {
         return boundingBox.hasIntersection(ray);
     }

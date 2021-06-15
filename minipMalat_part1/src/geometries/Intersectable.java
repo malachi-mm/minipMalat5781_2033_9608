@@ -3,6 +3,7 @@ package geometries;
 import primitives.BoundingBox;
 import primitives.Point3D;
 import primitives.Ray;
+import renderer.Render;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public interface Intersectable {
     }
 
     default List<GeoPoint> findGeoIntersections(Ray ray) {
-        if (this.BBGetIntersection(ray))
+        if (this.BBGetIntersection(ray)||!Geometries.useBounding)
             return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
         return null;
     }
