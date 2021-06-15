@@ -11,16 +11,23 @@ public class Material {
      * kR determines how much the Material is  reflecting
      */
     public double kT=0.0,kR=0.0;
+    /**
+     *kB the blurriness of the material(in transparency)
+     * kG the glossiness of the material(in reflection)
+     */
+
     public double kB=0.0,kG=0.0;
 
 
-
+/**
+the shininess of the material
+ */
     public int nShininess=0;
 
     /**
      * sets the diffuse blurry glass
-     * @param kB
-     * @return
+     * @param kB the size of the super sampling area for blurriness
+     * @return this object after replacing kB
      */
     public Material setkB(double kB) {
         this.kB = kB;
@@ -29,8 +36,8 @@ public class Material {
 
     /**
      * the Glossiness of the matter
-     * @param kG
-     * @return
+     * @param kG the size of the super sampling area for glossiness
+     * @return this object after replacing kG
      */
     public Material setkG(double kG) {
         this.kG = kG;

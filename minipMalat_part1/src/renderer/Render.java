@@ -226,7 +226,7 @@ public class Render {
             threads[i] = new Thread(() -> {
                 Pixel pixel = new Pixel(); // Auxiliary thread’s pixel object
                 while (thePixel.nextPixel(pixel)) {
-                    writer.writePixel(pixel.col, pixel.row, calcColorInPixel(nX, nY, pixel.col, pixel.row));
+                    writer.writePixel(pixel.row, pixel.col, calcColorInPixel(nX, nY, pixel.row, pixel.col));
                 }
             });
         }

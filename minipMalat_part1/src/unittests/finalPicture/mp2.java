@@ -71,7 +71,7 @@ public class mp2 {
     @Test
     public void modelTest() {
         Camera camera = new Camera(new Point3D(10, 120, -60), new Vector(0, -0.5, 1), new Vector(0, 1, 0.5)) //
-                .setViewPlaneSize(200, 200).setDistance(100); //
+                .setViewPlaneSize(384, 216).setDistance(150); //
         //camera.lookAt(new Point3D(75,0,25));
         //Camera camera = new Camera(new Point3D(377, 90, 0), new Vector(0, -0.5, -1), new Vector(0, 1, -0.5)) //
         //        .setViewPlaneSize(200, 200).setDistance(100); //
@@ -556,7 +556,7 @@ public class mp2 {
                         new Point3D(75 + t * -0.5, 50, 25 + t * -0.866),
                         new Point3D(75 + t * 0.5, 50, 25 + t * -0.866))
                         .setEmission(Color.BLACK) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.9).setkB(0.5)),
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.9).setkB(1)),
                 new Polygon(new Point3D(75 + t * 1, 55, 25 + t * 0),
                         new Point3D(75 + t * 0.5, 55, 25 + t * 0.866),
                         new Point3D(75 + t * -0.5, 55, 25 + t * 0.866),
@@ -749,7 +749,7 @@ public class mp2 {
         scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(66, 100, 25)));
         scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(92, 100, 25)));
 
-        ImageWriter imageWriter = new ImageWriter("mp1", 1000, 1000);
+        ImageWriter imageWriter = new ImageWriter("mp1", 3840, 2160);
         Render render = new Render() //
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
