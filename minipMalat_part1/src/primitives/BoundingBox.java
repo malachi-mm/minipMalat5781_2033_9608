@@ -117,4 +117,15 @@ public class BoundingBox {
     public Point3D getCenter() {
         return center;
     }
+
+    public int findBiggestEdge(){
+        double x=Math.abs(pointMax.getX()-pointMin.getX());
+        double y=Math.abs(pointMax.getY()-pointMin.getY());
+        double z=Math.abs(pointMax.getZ()-pointMin.getZ());
+        if (x>=y&&x>=z)
+            return 0;
+        if (y>=x&&y>=z)
+            return 1;
+        return 2;
+    }
 }

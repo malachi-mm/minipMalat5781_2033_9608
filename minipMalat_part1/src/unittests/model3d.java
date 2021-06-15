@@ -233,11 +233,11 @@ public class model3d {
                 cube(new Point3D(459.5, -4.5, -396.5), new Vector(-164, 0, 0), new Vector(0, 0.5, 0), new Vector(0, 0, 351), new Color(150, 120, 90)),
 
                 //har habayit
-                cube(new Point3D(0, -10, 0), new Vector(500, 0, 0), new Vector(0, -1, 0), new Vector(0, 0, -500), new Color(150, 125, 1)),
+                cube(new Point3D(0, -10, 0), new Vector(500, 0, 0), new Vector(0, -1, 0), new Vector(0, 0, -500), new Color(150, 125, 1))
 
-                new Plane(new Point3D(0, -10, -500), new Point3D(500, -10, -500), new Point3D(200, -10, -50))
-                        .setEmission(new Color(10, 10, 10)) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20))
+               // new Plane(new Point3D(0, -10, -500), new Point3D(500, -10, -500), new Point3D(200, -10, -50))
+                //        .setEmission(new Color(10, 10, 10)) //
+               //         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20))
         );
 
         scene.lights.add(new SpotLight(new Color(400, 0, 0), new Point3D(500, 50, 100), new Vector(0, 0, -1)) //
@@ -257,7 +257,8 @@ public class model3d {
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseDOF(false).setDebugPrint()
-                .setUseBounding(true);
+                .setUseBounding(true)
+                .buildHierarchy();
 
         render.renderImage();
         render.writeToImage();

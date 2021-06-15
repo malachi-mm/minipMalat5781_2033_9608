@@ -176,4 +176,17 @@ public class Point3D {
     public double getZ() {
         return z.coord;
     }
+
+    public double getCoord(int i){
+        switch(i){
+            case 0:
+                return x.coord;
+            case 1:
+                return y.coord;
+            case 2:
+                return z.coord;
+            default:
+                throw new IllegalArgumentException("i needs to be between 0-2");
+        }
+    }
 }

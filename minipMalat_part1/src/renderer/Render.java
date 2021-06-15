@@ -193,6 +193,11 @@ public class Render {
         return this;
     }
 
+    public Render buildHierarchy(){
+        rayTracer.scene.geometries.buildHierarchy();
+        return this;
+    }
+
         /**
          * Set debug printing on
          *

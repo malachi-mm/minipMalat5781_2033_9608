@@ -1,4 +1,4 @@
-package unittests.finalpicture;
+package unittests.finalPicture;
 
 import elements.*;
 import geometries.*;
@@ -9,7 +9,10 @@ import renderer.RayTracerBasic;
 import renderer.Render;
 import scene.Scene;
 
-public class mp1 {
+/**
+ * the final picture for MP2
+ */
+public class mp2 {
 
     Geometries cube(Point3D startPoint, Vector x, Vector y, Vector z, Color color) {
         Geometries polys = new Geometries();
@@ -67,7 +70,7 @@ public class mp1 {
 
     @Test
     public void modelTest() {
-        Camera camera = new Camera(new Point3D(0, 50, -100), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
+        Camera camera = new Camera(new Point3D(0, 100, -100), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
                 .setViewPlaneSize(200, 200).setDistance(100); //
         //Camera camera = new Camera(new Point3D(377, 90, 0), new Vector(0, -0.5, -1), new Vector(0, 1, -0.5)) //
         //        .setViewPlaneSize(200, 200).setDistance(100); //
@@ -76,37 +79,29 @@ public class mp1 {
         double d = 8;
 
         scene.geometries.add(
-
-                new Sphere(new Point3D(0,30,0),20)
-                        .setEmission(new Color(100,0,100))
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
-
-                new Polygon(new Point3D(50, 0, 50),
+                new Polygon(new Point3D(100, 200, 100),
+                        new Point3D(100, 0, 100),
                         new Point3D(100, 0, 0),
-                        new Point3D(100, 50, 0),
-                        new Point3D(50, 50, 50))
-                        .setEmission(new Color(0, 0, 0)) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(1)),
-
-                new Polygon(new Point3D(-200, 0, 0),
-                        new Point3D(-150, 0, -50),
-                        new Point3D(-150, 50, -50),
-                        new Point3D(-200, 50, 0))
-                        .setEmission(new Color(0, 0, 0)) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(1)),
-
-
-                new Polygon(new Point3D(500, 0, -500),
-                        new Point3D(-500, 0, -500),
-                        new Point3D(-500, 0, 500),
-                        new Point3D(500, 0, 500))
-                        .setEmission(new Color(0, 0, 0)) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkR(0))
-
+                        new Point3D(100, 200, 0))
+                        .setEmission(new Color(150, 120, 90)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+                new Polygon(new Point3D(-100, 200, 100),
+                        new Point3D(-100, 0, 100),
+                        new Point3D(100, 0, 100),
+                        new Point3D(100, 200, 100))
+                        .setEmission(new Color(150, 120, 90)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+                new Polygon(new Point3D(-100, 0, 100),
+                        new Point3D(-100, 0, 0),
+                        new Point3D(100, 0, 0),
+                        new Point3D(100, 0, 100))
+                        .setEmission(new Color(150, 120, 90)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20))
         );
 
-      scene.lights.add(new SpotLight(new Color(800, 400, 400),
-              new Point3D(10, 60, -30), new Vector(0, -1, 1)) //
+
+        scene.lights.add(new SpotLight(new Color(800, 400, 400),
+                new Point3D(10, 60, -30), new Vector(0, -1, 1)) //
                 .setkL(4E-5).setkQ(2E-7));
         //scene.lights.add(new DirectionalLight(new Color(500, 500, 500), new Vector(-1, -1, 1)));
         //scene.lights.add(new PointLight(new Color(255, 255, 255), new Point3D(377, 5, -170)));
@@ -116,7 +111,9 @@ public class mp1 {
                 .setWriter(imageWriter) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseDOF(false).setDebugPrint()
-                .setUseBounding(true);
+                .setMultithreading(3)
+                .setUseBounding(true)
+                .buildHierarchy();
 
         render.renderImage();
         render.writeToImage();

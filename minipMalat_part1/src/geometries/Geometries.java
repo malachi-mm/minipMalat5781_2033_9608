@@ -35,6 +35,15 @@ public class Geometries implements Intersectable {
         }
     }
 
+    public void add(List<Intersectable> geometriesList) {
+        this.geometriesList.addAll(geometriesList);
+        if (mainBox == null)
+            mainBox = new BoundingBox(geometriesList.get(0).getBoundingBox());
+        for (Intersectable geo : geometriesList) {
+            mainBox.addBoundingBox(geo.getBoundingBox());
+        }
+    }
+
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         List<Point3D> listPoints = null;
@@ -68,8 +77,33 @@ public class Geometries implements Intersectable {
         return listPoints;
     }
 
-    void buildHierarchy() {
+    /**
+     * builds the hierarchy
+     * probably recursive
+     */
+    public void buildHierarchy() {
+        if (this.geometriesList.size() <= 4)
+            return;
+        else {
+            int edge = mainBox.findBiggestEdge();
+            geometriesList.sort((Intersectable a, Intersectable b) -> {
+                double sizea = a.getBoundingBox().getCenter().getCoord(edge),
+                        sizeb = b.getBoundingBox().getCenter().getCoord(edge);
+                return sizea < sizeb ? -1 : sizea == sizeb ? 0 : 1;
+            });
+            Geometries GeoL=new Geometries(),GeoR=new Geometries();
 
+            int half = geometriesList.size()/2;
+            GeoL.add(geometriesList.subList(0,half));
+            GeoR.add(geometriesList.subList(half, geometriesList.size()));
+
+            GeoL.buildHierarchy();
+            GeoR.buildHierarchy();
+
+            this.mainBox=null;
+            this.geometriesList = new ArrayList<Intersectable>();
+            this.add(GeoL,GeoR);
+        }
     }
 
     public BoundingBox getBoundingBox() {
