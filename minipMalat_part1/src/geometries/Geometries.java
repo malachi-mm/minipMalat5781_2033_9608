@@ -7,17 +7,29 @@ import primitives.Ray;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * a class that represents
+ */
 public class Geometries implements Intersectable {
+    //the geometries
     List<Intersectable> geometriesList;
+    //the bounding box of this object
     BoundingBox mainBox;
 
     static Boolean useBounding = false;
 
-
+    /**
+     * a constructor that gets no geometries
+     */
     public Geometries() {
         geometriesList = new ArrayList<Intersectable>();
     }
 
+    /**
+     *a constructor that gets geometries and adds them to the list of geometries
+     * and also updates the bounding box of the object
+     * @param geometriesList the geometries we want the list to have
+     */
     public Geometries(Intersectable... geometriesList) {
         this.geometriesList = List.of(geometriesList);
         mainBox = new BoundingBox(geometriesList[0].getBoundingBox());
@@ -26,6 +38,11 @@ public class Geometries implements Intersectable {
         }
     }
 
+    /**
+     *a function that gets geometries and adds them to the list of geometries
+     *and also updates the bounding box of the object
+     * @param geometriesList the geometries we want the list to have
+     */
     public void add(Intersectable... geometriesList) {
         this.geometriesList.addAll(List.of(geometriesList));
         if (mainBox == null)
@@ -34,7 +51,11 @@ public class Geometries implements Intersectable {
             mainBox.addBoundingBox(geo.getBoundingBox());
         }
     }
-
+    /**
+     *a function that gets geometries and adds them to the list of geometries
+     *and also updates the bounding box of the object
+     * @param geometriesList the geometries we want the list to have
+     */
     public void add(List<Intersectable> geometriesList) {
         this.geometriesList.addAll(geometriesList);
         if (mainBox == null)
@@ -44,6 +65,11 @@ public class Geometries implements Intersectable {
         }
     }
 
+    /**
+     * finds the intersections between the ray and the geometries in the list
+     * @param ray the ray
+     * @return list of the intersection points
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         List<Point3D> listPoints = null;
@@ -60,7 +86,11 @@ public class Geometries implements Intersectable {
         return listPoints;
     }
 
-
+    /**
+     * finds the intersections between the ray and the geometries in the list
+     * @param ray the ray
+     * @return list which has a geoPoint for each  intersection
+     */
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         List<GeoPoint> listPoints = null;
@@ -79,25 +109,25 @@ public class Geometries implements Intersectable {
 
     /**
      * builds the hierarchy
-     * probably recursive
+     *  recursive
      */
     public void buildHierarchy() {
-        if (this.geometriesList.size() <= 4)
+        if (this.geometriesList.size() <= 4)//the end building more won't help
             return;
         else {
-            int edge = mainBox.findBiggestEdge();
-            geometriesList.sort((Intersectable a, Intersectable b) -> {
+            int edge = mainBox.findBiggestEdge();//what edge is the biggest in the Bounding box
+            geometriesList.sort((Intersectable a, Intersectable b) -> {//sorts the points according to the biggest axis
                 double sizea = a.getBoundingBox().getCenter().getCoord(edge),
                         sizeb = b.getBoundingBox().getCenter().getCoord(edge);
                 return sizea < sizeb ? -1 : sizea == sizeb ? 0 : 1;
             });
-            Geometries GeoL=new Geometries(),GeoR=new Geometries();
+            Geometries GeoL=new Geometries(),GeoR=new Geometries();//the two new geometries
 
             int half = geometriesList.size()/2;
             GeoL.add(geometriesList.subList(0,half));
             GeoR.add(geometriesList.subList(half, geometriesList.size()));
 
-            GeoL.buildHierarchy();
+            GeoL.buildHierarchy();//the recursion
             GeoR.buildHierarchy();
 
             this.mainBox=null;
@@ -106,6 +136,9 @@ public class Geometries implements Intersectable {
         }
     }
 
+    /**
+     * @return the bounding box of this object
+     */
     public BoundingBox getBoundingBox() {
         return mainBox;
     }
@@ -114,6 +147,9 @@ public class Geometries implements Intersectable {
         return mainBox.hasIntersection(ray);
     }
 
+    /**
+     * @param useBounding weather we are using BVH or not
+     */
     public static void setUseBounding(Boolean useBounding) {
         Geometries.useBounding = useBounding;
     }

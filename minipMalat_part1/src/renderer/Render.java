@@ -260,7 +260,7 @@ public class Render {
                 color = color.add(c);
             }
             color = color.reduce(rays.size());
-        } //if using depth of field
+        } //if using depth of field I assumed that you can't use both antialiasing and DOF on the same picture
         else if (useAntiAliasing) {
 
             List<Ray> rays = camera.calcAntiAliasingRays(nX, nY, i, j);

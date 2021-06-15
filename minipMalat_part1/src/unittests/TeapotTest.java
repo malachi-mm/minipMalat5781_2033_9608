@@ -1565,7 +1565,10 @@ public class TeapotTest {
 				.setRayTracer(new RayTracerBasic(scene)) //
 				.setMultithreading(3).setDebugPrint()
 				.setUseBounding(true)
-				.buildHierarchy();
+				.buildHierarchy()
+				.setUseAntiAliasing(false)
+				.setSizeSuperSamplingAntiAliasing(64);
+
 		render.renderImage();
 		render.printGrid(50, new Color(java.awt.Color.YELLOW));
 		render.writeToImage();
