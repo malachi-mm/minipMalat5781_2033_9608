@@ -172,6 +172,10 @@ public class Camera {
         Point3D focalPoint = ray.getPoint(t);
         List<Point3D> points = SuperSampling.superSampling(calcPointOnPixel(nX, nY, j, i),vTo,sizeSuperSamplingDOF,apertureRadius);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
 
+        //if(point3DList == null)
+        //    point3DList = SuperSampling.superSampling(calcPointOnPixel(nX, nY,((double) (nX - 1)) / 2 , ((double) (nY - 1)) / 2),vTo,sizeSuperSamplingDOF,apertureRadius);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
+
+
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
             rays.add(new Ray(point, focalPoint.subtract(point)));

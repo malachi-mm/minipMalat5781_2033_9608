@@ -86,6 +86,8 @@ public class Project1Tests {
                 .setRayTracer(new RayTracerBasic(scene)).setUseDOF(true)
                 .setApertureDistance(100).setApertureSize(5)
                 .setMultithreading(3).setDebugPrint()
+                //.setUseBounding(true)
+                //.buildHierarchy()
                 .setSizeSuperSamplingDOF(81);
 
         render.renderImage();
