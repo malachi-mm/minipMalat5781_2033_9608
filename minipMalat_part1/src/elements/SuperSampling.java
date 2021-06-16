@@ -56,4 +56,20 @@ public class  SuperSampling {
         }
         return points;
     }
+
+    public static List<Point3D> AdaptiveSuperSampeling(Point3D point, Vector l1,Vector l2, double radius1,double radius2){
+        l1.normalize();
+        l2.normalize();
+
+        List<Point3D> points = new ArrayList<Point3D>();
+        for (int k = 0; k <3; k+=2) {
+            for (int t = 0; t < 3; t+=2) {
+                //might be change because now it is a rectangular but not a circle
+                Point3D newPoint = point.add(l1.scale(radius1 * (1 - k)));
+                newPoint = newPoint.add(l2.scale(radius2 * (1 - t)));
+                points.add(newPoint);
+        }
+    }
+        return points;
+    }
 }

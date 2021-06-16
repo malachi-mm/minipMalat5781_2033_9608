@@ -121,5 +121,9 @@ public class Color {
 			throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
 		return new Color(r / k, g / k, b / k);
 	}
+	public boolean similar(Color color){
+		return (Math.abs(r- color.r)<5&&Math.abs(g- color.g)<5&&Math.abs(b- color.b)<5);
+
+	}
 
 }

@@ -23,6 +23,7 @@ public class Render {
     boolean useDOF = false;
     boolean useAntiAliasing = false;
     //boolean useGlossySurfaces = false;
+    boolean useAdaptiveSuperSampling = false;
 
     private int threadsNumber = 1;
     private final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores
@@ -141,6 +142,11 @@ public class Render {
         return this;
     }
 
+    public Render setUseAdaptiveSuperSampling(boolean useAdaptiveSuperSampling) {
+        this.useAdaptiveSuperSampling = useAdaptiveSuperSampling;
+        return this;
+    }
+
     /**
      * sets the size of the aperture
      *
@@ -193,16 +199,16 @@ public class Render {
         return this;
     }
 
-    public Render buildHierarchy(){
+    public Render buildHierarchy() {
         rayTracer.scene.geometries.buildHierarchy();
         return this;
     }
 
-        /**
-         * Set debug printing on
-         *
-         * @return the Render object itself
-         */
+    /**
+     * Set debug printing on
+     *
+     * @return the Render object itself
+     */
     public Render setDebugPrint() {
         print = true;
         return this;
@@ -249,7 +255,7 @@ public class Render {
      * @param nY
      * @param i
      * @param j
-     * @return
+     * @return the color in this pixel
      */
     private Color calcColorInPixel(int nX, int nY, int i, int j) {
         Color color = Color.BLACK;
@@ -264,11 +270,16 @@ public class Render {
         else if (useAntiAliasing) {
 
             List<Ray> rays = camera.calcAntiAliasingRays(nX, nY, i, j);
-            for (Ray ray : rays) {
-                Color c = rayTracer.traceRay(ray);
-                color = color.add(c);
+            Color C1 = rayTracer.traceRay(rays.get(0));
+            if (useAdaptiveSuperSampling && C1.similar(rayTracer.traceRay(rays.get(1))) && C1.similar(rayTracer.traceRay(rays.get(2))) && C1.similar(rayTracer.traceRay(rays.get(3))))
+                color = C1;
+            else {
+                rays.remove(0);rays.remove(1);rays.remove(2);rays.remove(3);
+                for (Ray ray : rays) {
+                    color = color.add(rayTracer.traceRay(ray));
+                }
+                color = color.reduce(rays.size());
             }
-            color = color.reduce(rays.size());
         }//if using antialiasing
         else //the normal way
             color = rayTracer.traceRay(camera.constructRayThroughPixel(nX, nY, i, j));

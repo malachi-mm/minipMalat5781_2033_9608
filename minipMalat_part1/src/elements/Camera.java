@@ -191,9 +191,10 @@ public class Camera {
      * @return list of the Rays we will use for antialiasing
      */
     public List<Ray> calcAntiAliasingRays(int nX, int nY, int j, int i) {
-
-        List<Point3D> points = SuperSampling.superSampling
-                (calcPointOnPixel(nX, nY, j, i), vRight,vUp,sizeSuperSamplingAntiAliasing,width/nX,height/nY);// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
+        Point3D point1=calcPointOnPixel(nX, nY, j, i);
+        List<Point3D> points=SuperSampling.AdaptiveSuperSampeling(point1, vRight,vUp,width/nX,height/nY);
+        points.addAll(SuperSampling.superSampling
+                (point1, vRight,vUp,sizeSuperSamplingAntiAliasing,width/nX,height/nY));// superSampling(nX, nY, j, i, sizeSuperSamplingDOF, apertureRadius);
         List<Ray> rays = new ArrayList<Ray>();
         for (Point3D point : points) {
             rays.add(new Ray(p0, point.subtract(p0)));
