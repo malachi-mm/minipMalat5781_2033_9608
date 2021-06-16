@@ -128,4 +128,8 @@ public class BoundingBox {
             return 1;
         return 2;
     }
+
+    public Point3D getPointMax() {
+        return pointMax;
+    }
 }

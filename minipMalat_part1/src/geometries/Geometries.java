@@ -26,8 +26,9 @@ public class Geometries implements Intersectable {
     }
 
     /**
-     *a constructor that gets geometries and adds them to the list of geometries
+     * a constructor that gets geometries and adds them to the list of geometries
      * and also updates the bounding box of the object
+     *
      * @param geometriesList the geometries we want the list to have
      */
     public Geometries(Intersectable... geometriesList) {
@@ -39,26 +40,31 @@ public class Geometries implements Intersectable {
     }
 
     /**
-     *a function that gets geometries and adds them to the list of geometries
-     *and also updates the bounding box of the object
+     * a function that gets geometries and adds them to the list of geometries
+     * and also updates the bounding box of the object
+     *
      * @param geometriesList the geometries we want the list to have
      */
     public void add(Intersectable... geometriesList) {
-        this.geometriesList.addAll(List.of(geometriesList));
-        if (mainBox == null)
-            mainBox = new BoundingBox(geometriesList[0].getBoundingBox());
-        for (Intersectable geo : geometriesList) {
-            mainBox.addBoundingBox(geo.getBoundingBox());
+        if (geometriesList != null) {
+            this.geometriesList.addAll(List.of(geometriesList));
+            if (mainBox == null)
+                mainBox = new BoundingBox(geometriesList[0].getBoundingBox());
+            for (Intersectable geo : geometriesList) {
+                mainBox.addBoundingBox(geo.getBoundingBox());
+            }
         }
     }
+
     /**
-     *a function that gets geometries and adds them to the list of geometries
-     *and also updates the bounding box of the object
+     * a function that gets geometries and adds them to the list of geometries
+     * and also updates the bounding box of the object
+     *
      * @param geometriesList the geometries we want the list to have
      */
     public void add(List<Intersectable> geometriesList) {
         this.geometriesList.addAll(geometriesList);
-        if (mainBox == null)
+        if (mainBox == null && geometriesList.size() > 0)
             mainBox = new BoundingBox(geometriesList.get(0).getBoundingBox());
         for (Intersectable geo : geometriesList) {
             mainBox.addBoundingBox(geo.getBoundingBox());
@@ -67,6 +73,7 @@ public class Geometries implements Intersectable {
 
     /**
      * finds the intersections between the ray and the geometries in the list
+     *
      * @param ray the ray
      * @return list of the intersection points
      */
@@ -88,6 +95,7 @@ public class Geometries implements Intersectable {
 
     /**
      * finds the intersections between the ray and the geometries in the list
+     *
      * @param ray the ray
      * @return list which has a geoPoint for each  intersection
      */
@@ -109,7 +117,7 @@ public class Geometries implements Intersectable {
 
     /**
      * builds the hierarchy
-     *  recursive
+     * recursive
      */
     public void buildHierarchy() {
         if (this.geometriesList.size() <= 4)//the end building more won't help
@@ -121,18 +129,25 @@ public class Geometries implements Intersectable {
                         sizeb = b.getBoundingBox().getCenter().getCoord(edge);
                 return sizea < sizeb ? -1 : sizea == sizeb ? 0 : 1;
             });
-            Geometries GeoL=new Geometries(),GeoR=new Geometries();//the two new geometries
-
-            int half = geometriesList.size()/2;
+            Geometries GeoL = new Geometries(), GeoR = new Geometries();//the two new geometries
+            int half = 0;
+            /*for (; half < geometriesList.size(); ++half) {
+                if (geometriesList.get(half).getBoundingBox().getCenter().getCoord(edge) < mainBox.getPointMax().getCoord(edge) / 2) {
+                    GeoL.add(geometriesList.get(half));
+                } else {
+                    GeoR.add(geometriesList.get(half));
+                }
+            }*/
+            half = geometriesList.size()/2;
             GeoL.add(geometriesList.subList(0,half));
             GeoR.add(geometriesList.subList(half, geometriesList.size()));
 
             GeoL.buildHierarchy();//the recursion
             GeoR.buildHierarchy();
 
-            this.mainBox=null;
+            this.mainBox = null;
             this.geometriesList = new ArrayList<Intersectable>();
-            this.add(GeoL,GeoR);
+            this.add(GeoL, GeoR);
         }
     }
 

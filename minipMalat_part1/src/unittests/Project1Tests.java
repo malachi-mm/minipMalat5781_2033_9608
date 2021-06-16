@@ -86,8 +86,8 @@ public class Project1Tests {
                 .setRayTracer(new RayTracerBasic(scene)).setUseDOF(true)
                 .setApertureDistance(100).setApertureSize(5)
                 .setMultithreading(3).setDebugPrint()
-                //.setUseBounding(true)
-                //.buildHierarchy()
+                .setUseBounding(true)
+                .buildHierarchy()
                 .setSizeSuperSamplingDOF(81);
 
         render.renderImage();
@@ -169,6 +169,8 @@ public class Project1Tests {
                 .setRayTracer(new RayTracerBasic(scene))
                 .setUseGlossySurfaces(true)
                 .setMultithreading(3).setDebugPrint()
+                .setUseBounding(true)
+                .buildHierarchy()
                 .setSizeSuperSamplingGlossySurfaces(81);
 
         render.renderImage();
@@ -246,7 +248,9 @@ public class Project1Tests {
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene)).setUseAntiAliasing(true)
                 .setSizeSuperSamplingAntiAliasing(81)
-                .setMultithreading(3).setDebugPrint();
+                .setMultithreading(3).setDebugPrint()
+                .setUseBounding(true)
+                .buildHierarchy();
 
 
         render.renderImage();
