@@ -126,6 +126,8 @@ private Scene calcScene(){
                         new Point3D(160, 160, 200))
             .setEmission(new Color(150, 120, 90)) //
             .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+            //*********************************************************************************
+                //windows 11
             new Polygon(new Point3D(-20, 160, 200),
                         new Point3D(-20, 40, 200),
                         new Point3D(-160, 40, 200),
@@ -552,7 +554,7 @@ private Scene calcScene(){
                         new Point3D(75 + t * -0.5, 50, 25 + t * -0.866),
                         new Point3D(75 + t * 0.5, 50, 25 + t * -0.866))
             .setEmission(Color.BLACK) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.9).setkR(0.1).setkB(0.5)),
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20).setkT(0.8).setkR(0.1).setkB(0.3)),
             new Polygon(new Point3D(75 + t * 1, 55, 25 + t * 0),
                         new Point3D(75 + t * 0.5, 55, 25 + t * 0.866),
                         new Point3D(75 + t * -0.5, 55, 25 + t * 0.866),
@@ -725,21 +727,36 @@ private Scene calcScene(){
 
 
             //**********************************************************************************************************
-            //the two lights
-            new Cylinder(new Ray(new Point3D(92, 110, 50), new Vector(0, 1, 0)), 0.2, 100)
-            .setEmission(Color.BLACK) //
+            //the four lights
+                new Cylinder(new Ray(new Point3D(92, 110, 62), new Vector(0, 1, 0)), 0.2, 100)
+                        .setEmission(Color.BLACK) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
-            new Cylinder(new Ray(new Point3D(66, 110, 50), new Vector(0, 1, 0)), 0.2, 100)
-            .setEmission(Color.BLACK) //
+                new Cylinder(new Ray(new Point3D(66, 110, 62), new Vector(0, 1, 0)), 0.2, 100)
+                        .setEmission(Color.BLACK) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
-            new Sphere(new Point3D(92, 100, 50), 10)
-            .setEmission(new Color(50, 50, 50)) //
-            .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.8)),
+                new Sphere(new Point3D(92, 100, 62), 10)
+                        .setEmission(new Color(100, 100, 100)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
 
-            new Sphere(new Point3D(66, 100, 50), 10)
-            .setEmission(new Color(200, 200, 200)) //
-            .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.3)),
+                new Sphere(new Point3D(66, 100, 62), 10)
+                        .setEmission(new Color(200, 200, 200)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
+
+                new Cylinder(new Ray(new Point3D(92, 110, 38), new Vector(0, 1, 0)), 0.2, 100)
+                        .setEmission(Color.BLACK) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+                new Cylinder(new Ray(new Point3D(66, 110, 38), new Vector(0, 1, 0)), 0.2, 100)
+                        .setEmission(Color.BLACK) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
+
+                new Sphere(new Point3D(92, 100, 38), 10)
+                        .setEmission(new Color(200, 200, 200)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
+
+                new Sphere(new Point3D(66, 100, 38), 10)
+                        .setEmission(new Color(100, 100, 100)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
 
 
     //*****************************************************************************************************************************************88
@@ -851,10 +868,12 @@ private Scene calcScene(){
 
 //########################################################################################################################
         //lights
-        scene.lights.add(new DirectionalLight(new Color(300, 300, 300), new Vector(1, -1.3, -1)));
-        scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(66, 100, 25)));
-        scene.lights.add(new PointLight(new Color(100, 100, 100), new Point3D(92, 100, 25)));
-        return scene;
+    scene.lights.add(new DirectionalLight(new Color(300, 300, 300), new Vector(1, -1.3, -1)));
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(66, 100, 62)));
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(66, 100, 38)));
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(92, 100, 62)));
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(92, 100, 38)));
+     return scene;
     }
 
     /**
@@ -874,10 +893,32 @@ private Scene calcScene(){
                 .setMultithreading(3)
                 .setUseBounding(true)
                 .buildHierarchy()
-                .setUseGlossySurfaces(false)
+                .setUseGlossySurfaces(true)
+                .setSizeSuperSamplingGlossySurfaces(49)
+                .setUseAntiAliasing(true)
+                .setSizeSuperSamplingAntiAliasing(121)
+                .setUseAdaptiveSuperSampling(true);
+
+        render.renderImage();
+        render.writeToImage();
+    }
+
+    @Test
+    public void modelTestWithoutMP2() {
+
+        Camera camera = new Camera(new Point3D(10, 120, -45), new Vector(0, -0.5, 1), new Vector(0, 1, 0.5)) //
+                .setViewPlaneSize(384, 216).setDistance(152); //
+        Scene scene=calcScene();
+        ImageWriter imageWriter = new ImageWriter("mp2Without", 1920, 1080);
+        Render render = new Render() //
+                .setWriter(imageWriter) //
+                .setCamera(camera) //
+                .setRayTracer(new RayTracerBasic(scene)).setUseDOF(false).setDebugPrint()
+                .setUseGlossySurfaces(true)
                 .setSizeSuperSamplingGlossySurfaces(16)
                 .setUseAntiAliasing(false)
-                .setSizeSuperSamplingAntiAliasing(16);
+                .setSizeSuperSamplingAntiAliasing(16)
+                .setUseAdaptiveSuperSampling(false);
 
         render.renderImage();
         render.writeToImage();
