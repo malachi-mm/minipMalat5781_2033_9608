@@ -882,11 +882,11 @@ public class mp2 {
                 .setMultithreading(3)
                 .setUseBounding(true)
                 .buildHierarchy()
-                .setUseGlossySurfaces(false)
+                .setUseGlossySurfaces(true)
                 .setSizeSuperSamplingGlossySurfaces(49)
-                .setUseAntiAliasing(false)
+                .setUseAntiAliasing(true)
                 .setSizeSuperSamplingAntiAliasing(121)
-                .setUseAdaptiveSuperSampling(false);
+                .setUseAdaptiveSuperSampling(true);
 
         render.renderImage();
         render.writeToImage();
