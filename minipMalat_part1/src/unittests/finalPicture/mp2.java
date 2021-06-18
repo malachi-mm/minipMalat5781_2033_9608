@@ -728,37 +728,27 @@ private Scene calcScene(){
 
 //**********************************************************************************************************
             //the three lights
-                new Cylinder(new Ray(new Point3D(92, 110, 62), new Vector(0, 1, 0)), 0.2, 100)
+//the four lights
+                //75,55,25
+                new Cylinder(new Ray(new Point3D(104, 110, 35), new Vector(0, 1, 0)), 0.2, 100)
                         .setEmission(Color.BLACK) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
-                new Cylinder(new Ray(new Point3D(66, 110, 62), new Vector(0, 1, 0)), 0.2, 100)
+                new Cylinder(new Ray(new Point3D(75, 110, 35), new Vector(0, 1, 0)), 0.2, 100)
                         .setEmission(Color.BLACK) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
-
-                new Sphere(new Point3D(92, 100, 62), 10)
-                        .setEmission(new Color(100, 100, 100)) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
-
-                new Sphere(new Point3D(66, 100, 62), 10)
-                        .setEmission(new Color(200, 200, 200)) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
-
-                new Cylinder(new Ray(new Point3D(92, 110, 38), new Vector(0, 1, 0)), 0.2, 100)
-                        .setEmission(Color.BLACK) //
-                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
-                new Cylinder(new Ray(new Point3D(66, 110, 38), new Vector(0, 1, 0)), 0.2, 100)
+                new Cylinder(new Ray(new Point3D(50, 110, 35), new Vector(0, 1, 0)), 0.2, 100)
                         .setEmission(Color.BLACK) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setnShininess(20)),
 
-                new Sphere(new Point3D(92, 100, 38), 10)
-                        .setEmission(new Color(200, 200, 200)) //
+                new Sphere(new Point3D(104, 100, 35), 10)
+                        .setEmission(new Color(150, 150, 150)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
-
-                new Sphere(new Point3D(66, 100, 38), 10)
-                        .setEmission(new Color(100, 100, 100)) //
+                new Sphere(new Point3D(75, 100, 35), 10)
+                        .setEmission(new Color(150, 150, 150)) //
                         .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
-
-
+                new Sphere(new Point3D(50, 100, 35), 10)
+                        .setEmission(new Color(150, 150, 150)) //
+                        .setMaterial(new Material().setkD(0.25).setkS(0.25).setkT(0.4)),
     //*****************************************************************************************************************************************88
                 //shelf
 
@@ -867,13 +857,12 @@ private Scene calcScene(){
 
 
 //########################################################################################################################
-        //lights
+//lights
     scene.lights.add(new DirectionalLight(new Color(300, 300, 300), new Vector(1, -1.3, -1)));
-    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(66, 100, 62)));
-    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(66, 100, 38)));
-    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(92, 100, 62)));
-    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(92, 100, 38)));
-     return scene;
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(50, 100, 35)));
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(75, 100, 35)));
+    scene.lights.add(new PointLight(new Color(50, 50, 50), new Point3D(104, 100, 35)));
+    return scene;
     }
 
     /**
